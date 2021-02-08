@@ -91,4 +91,8 @@ public class ProductController {
 //	public String deleteProduct(@PathVariable Long id) {
 //		return productservice.deleteProduct(id);
 //	}
+    @GetMapping("/hi")
+    public String g() {
+    	return "HIIIIIIII";
+    }
 }
