@@ -8,11 +8,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import com.sun.istack.NotNull;
 
 import lombok.AccessLevel;
 import lombok.Data;
@@ -43,12 +42,10 @@ public class User implements Serializable {
 	private String Name;
 
 	@NotNull
-	@Email
 	@Column(unique = true)
 	private String email;
 
 	@NotNull
-	@Size(min = 6, max = 15)
 	private String password;
 
 	private String image;

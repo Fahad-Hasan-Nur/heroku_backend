@@ -3,7 +3,8 @@ package com.spring.ecommerce.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+
+import com.sun.istack.NotNull;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

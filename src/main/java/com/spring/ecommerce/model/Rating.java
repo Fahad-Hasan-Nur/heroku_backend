@@ -5,9 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import com.sun.istack.NotNull;
 
 import lombok.AccessLevel;
 import lombok.Data;
