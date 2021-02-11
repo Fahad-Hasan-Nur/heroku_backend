@@ -2,8 +2,12 @@ package com.spring.ecommerce.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sun.istack.NotNull;
 
 import lombok.Data;
@@ -32,6 +36,17 @@ public class Brand extends AbstractPersistableEntity{
 	private String code;
 	
 	private String description;
+	
+	@ManyToOne
+	@JoinColumn(name = "image_id",referencedColumnName = "id")
+	@JsonIgnore
+	private Image image;
+	
+	@Transient
+	private String imageId;
+	
+	@Transient
+	private String imageName;
 	
 	
 }

@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.spring.ecommerce.dto.BrandDto;
 import com.spring.ecommerce.model.Brand;
 import com.spring.ecommerce.repository.BrandRepo;
+import com.spring.ecommerce.repository.ImageRepo;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -28,6 +29,8 @@ import lombok.extern.slf4j.Slf4j;
 public class BrandServiceImpl implements BrandService {
 	@Autowired
 	private BrandRepo brandRepo;
+	@Autowired
+	ImageRepo imageRepo;
 
 	/*************************************************************************
 	 * Create a new Brand
@@ -38,6 +41,7 @@ public class BrandServiceImpl implements BrandService {
 	@Override
 	public Brand create(Brand brand, HttpServletResponse rs) {
 		try {
+			brand.setImage(imageRepo.findByName(brand.getImageName()).orElse(null));
 			return brandRepo.save(brand);
 		} catch (Exception e) {
 			log.warn("Failed to create  Product: ", e);

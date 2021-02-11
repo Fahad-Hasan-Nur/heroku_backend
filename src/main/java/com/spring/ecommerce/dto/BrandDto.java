@@ -10,4 +10,6 @@ public class BrandDto {
 	String name;
 	String code;
 	String description;
+	private String imageId;
+	private String imageName;
 }

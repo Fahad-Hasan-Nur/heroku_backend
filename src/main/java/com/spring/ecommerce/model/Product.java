@@ -33,7 +33,6 @@ public class Product extends AbstractPersistableEntity{
 			@NotNull
 			private String name;
 			
-			@Column(unique = true)
 			@NotNull
 			private String code;
 			
@@ -77,6 +76,17 @@ public class Product extends AbstractPersistableEntity{
 			@Column(nullable = false)
 			@NotNull
 			private int quantity;
+			
+			@ManyToOne
+			@JoinColumn(name = "image_id",referencedColumnName = "id")
+			@JsonIgnore
+			private Image image;
+			
+			@Transient
+			private String imageName;
+			
+			@Transient
+			private String imageId;
 			
 		}
 

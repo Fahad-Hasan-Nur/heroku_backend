@@ -34,6 +34,8 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public UserDto getUserDtoFromEntity(User ob) {
+		ob.setImageId(ob.getImage().getId());
+		ob.setImageName(ob.getImage().getName());
 		UserDto obj = new UserDto();
 		BeanUtils.copyProperties(ob, obj);
 		return obj;

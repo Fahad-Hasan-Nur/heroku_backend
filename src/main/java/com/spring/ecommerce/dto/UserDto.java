@@ -14,6 +14,8 @@ public class UserDto {
 		private Date birthDate;
 		private String gender;
 		private boolean active;
+		private String imageId;
+		private String imageName;
 		
 		
 

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.spring.ecommerce.dto.ProductDto;
 import com.spring.ecommerce.model.Product;
@@ -35,4 +36,11 @@ public interface ProductService {
      * @return {@link List<Product>}
      *************************************************************************/
 	List<ProductDto> getAllActiveProducts();
+	
+	 /*************************************************************************
+     * Get Product {@link  Product} by Id
+     * 
+     * @return {@link  Product}
+     *************************************************************************/
+	 ProductDto getProductById(String id);
 }
