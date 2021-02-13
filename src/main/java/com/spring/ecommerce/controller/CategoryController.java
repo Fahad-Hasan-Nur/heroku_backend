@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -90,7 +89,7 @@ public class CategoryController {
 	 * @return {@link Category}
 	 *************************************************************************/
 	@PutMapping
-	public Category update(@Valid @RequestBody Category ob) {
+	public Category update(@RequestBody Category ob) {
 		return service.update(ob);
 	}
 
