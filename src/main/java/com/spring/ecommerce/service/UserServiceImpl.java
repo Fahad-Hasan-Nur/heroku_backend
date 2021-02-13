@@ -6,12 +6,17 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.ecommerce.dto.UserDto;
 import com.spring.ecommerce.model.User;
+import com.spring.ecommerce.repository.ImageRepo;
 import com.spring.ecommerce.repository.UserRepo;
+
+import lombok.RequiredArgsConstructor;
 
 
 /*************************************************************************
@@ -22,10 +27,11 @@ import com.spring.ecommerce.repository.UserRepo;
  *************************************************************************/
 @Service
 @Transactional
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserServiceImpl implements UserService {
 
-	@Autowired
-	private UserRepo userRepo;
+	private final UserRepo userRepo;
+	private final ImageRepo imageRepo;
 
 	// TODO remove
 	@Override
@@ -33,9 +39,35 @@ public class UserServiceImpl implements UserService {
 		return userRepo.findAll().stream().map(this::getUserDtoFromEntity).collect(Collectors.toList());
 	}
 
+	@Override
+	public ResponseEntity<?> deleteById(String id) {
+		try {
+			User ob =userRepo.findById(id).orElse(null);
+			if(ob.getImage()!=null) {
+				imageRepo.deleteById(ob.getImage().getId());
+			}
+			userRepo.deleteById(id);
+			return new ResponseEntity<>("Deleted Succecfully.", HttpStatus.OK);
+		} catch (Exception e) {
+			
+			return new ResponseEntity<>("UnSuccecfully.", HttpStatus.BAD_REQUEST);
+		}
+	}
+	
+	/*************************************************************************
+     * Get User {@link  User} by Email
+     * 
+     * @return {@link  User}
+     *************************************************************************/
+	@Override
+	public User getUserByEmail(String email) {
+		return userRepo.findByEmail(email);
+	}
 	public UserDto getUserDtoFromEntity(User ob) {
-		ob.setImageId(ob.getImage().getId());
-		ob.setImageName(ob.getImage().getName());
+		if(ob.getImage()!=null) {
+			ob.setImageId(ob.getImage().getId());
+			ob.setImageName(ob.getImage().getName());
+		}
 		UserDto obj = new UserDto();
 		BeanUtils.copyProperties(ob, obj);
 		return obj;

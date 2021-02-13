@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.ResponseEntity;
+
 import com.spring.ecommerce.dto.BrandDto;
 import com.spring.ecommerce.model.Brand;
 
@@ -35,4 +37,28 @@ public interface BrandService {
      * @return {@link List< Brand>}
      *************************************************************************/
 	List<BrandDto> getAllActiveBrand();
+	/*************************************************************************
+	 * Get Brand {@link Brand} by Id
+	 * 
+	 * @return {@link Brand}
+	 *************************************************************************/
+	Brand getBrandById(String id);
+
+	/*************************************************************************
+	 * Update {@link Brand}
+	 * 
+	 * @param ob {@link Brand} object
+	 * @param rs
+	 * @return {@link Brand}
+	 *************************************************************************/
+	Brand update(Brand ob);
+
+	/*************************************************************************
+	 * Delete {@link Brand}
+	 * 
+	 * @param ob {@link Brand} object
+	 * @param rs
+	 * @return {@link Brand}
+	 *************************************************************************/
+	ResponseEntity<?> deleteById(String id );
 }

@@ -15,8 +15,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.ecommerce.emailConfirmation.ConfirmationToken;
 import com.spring.ecommerce.emailConfirmation.ConfirmationTokenRepo;
-import com.spring.ecommerce.emailConfirmation.EmailService;
+import com.spring.ecommerce.emailConfirmation.EmailConfig;
+import com.spring.ecommerce.model.Admin;
 import com.spring.ecommerce.model.User;
+import com.spring.ecommerce.repository.AdminRepo;
 import com.spring.ecommerce.repository.UserRepo;
 import com.spring.ecommerce.security.jwt.AuthenticationRequest;
 import com.spring.ecommerce.security.jwt.AuthenticationResponse;
@@ -37,9 +39,11 @@ import lombok.extern.slf4j.Slf4j;
 public class AuthServiceImpl implements AuthService {
 
 	@Autowired
-	private AuthenticationManager authenticationManager;
+	private  AuthenticationManager authenticationManager;
 	@Autowired
-	private UserDetailsServiceImpl service;
+	private  UserDetailsServiceImpl service;
+	@Autowired
+	private AdminRepo adminRepo;
 	@Autowired
 	private JwtProvider jwtProvider;
 	@Autowired
@@ -47,7 +51,7 @@ public class AuthServiceImpl implements AuthService {
 	@Autowired
 	private ConfirmationTokenRepo tokenRepo;
 	@Autowired
-	EmailService emailService;
+	EmailConfig emailService;
 	@Autowired
 	private PasswordEncoder passwordEncoder;
 
@@ -65,11 +69,11 @@ public class AuthServiceImpl implements AuthService {
 			return "User exists!!!";
 		} else {
 			try {
+				SimpleMailMessage mailMessage = new SimpleMailMessage();
 				user.setPassword(passwordEncoder.encode(user.getPassword()));
 				userRepo.save(user);
 				ConfirmationToken confirmationToken = new ConfirmationToken(user);
 				tokenRepo.save(confirmationToken);
-				SimpleMailMessage mailMessage = new SimpleMailMessage();
 				mailMessage.setTo(user.getEmail());
 				mailMessage.setSubject("Complete Registration!");
 				mailMessage.setText("To confirm your account, please click here : "
@@ -93,7 +97,7 @@ public class AuthServiceImpl implements AuthService {
 	 * @return {@link JWT}
 	 *************************************************************************/
 	@Override
-	public ResponseEntity<?> createToken(AuthenticationRequest authenticationRequest) throws Exception {
+	public ResponseEntity<?> createTokenForUser(AuthenticationRequest authenticationRequest) throws Exception {
 
 		final User user = userRepo.findByEmailAndActive(authenticationRequest.getEmail(), true);
 		if (user == null) {
@@ -127,10 +131,37 @@ public class AuthServiceImpl implements AuthService {
 			User user = userRepo.findByEmailIgnoreCase(cToken.getUser().getEmail());
 			user.setActive(true);
 			userRepo.save(user);
+			tokenRepo.delete(cToken);
 			return "User Activated";
 		} else {
 			rs.setHeader("error", "The link is invalid or broken!");
 			return "Failed Activation";
 		}
+	}
+	
+	/*************************************************************************
+	 * User Login
+	 * 
+	 * @param ob {@link AuthenticationRequest} object
+	 * @param rs {@link HttpServletResponse} object
+	 * @return {@link JWT}
+	 *************************************************************************/
+	@Override
+	public ResponseEntity<?> createTokenForAdmin(AuthenticationRequest authenticationRequest) throws Exception {
+
+		final Admin admin = adminRepo.findByEmailAndActive(authenticationRequest.getEmail(), true);
+		if (admin == null) {
+			return ResponseEntity.ok("User not found");
+		}
+		try {
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),
+					authenticationRequest.getPassword()));
+		} catch (BadCredentialsException e) {
+			throw new Exception("Incorrect Email Or Pasword.", e);
+		}
+		final UserDetails userDetails = service.loadUserByUsername(authenticationRequest.getEmail());
+		
+		final String jwt = jwtProvider.generateToken(userDetails);
+		return ResponseEntity.ok(new AuthenticationResponse(jwt));
 	}
 }

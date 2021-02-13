@@ -15,7 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.spring.ecommerce.model.Image;
 import com.spring.ecommerce.repository.ImageRepo;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 
 /*************************************************************************
  * {@link ImageServiceImpl} implementation class
@@ -25,11 +25,11 @@ import lombok.extern.slf4j.Slf4j;
  *************************************************************************/
 @Service
 @Transactional
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ImageServiceImpl implements ImageService{
 	
-	
-	@Autowired
-	ImageRepo repo;
+
+	private final ImageRepo repo;
 	/*************************************************************************
 	 * Upload a new Image
 	 * 

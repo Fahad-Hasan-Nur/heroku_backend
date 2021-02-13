@@ -7,16 +7,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.spring.ecommerce.dto.SubCategoryDto;
 import com.spring.ecommerce.model.SubCategory;
 import com.spring.ecommerce.repository.CategoryRepo;
 import com.spring.ecommerce.repository.SubCategoryRepo;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /*************************************************************************
@@ -28,11 +29,11 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Transactional
 @Slf4j
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SubCategoryServiceImpl implements SubCategoryService {
-	@Autowired
-	private SubCategoryRepo subCategoryRepo;
-	@Autowired
-	private CategoryRepo categoryRepo;
+
+	private final SubCategoryRepo subCategoryRepo;
+	private final CategoryRepo categoryRepo;
 
 	/*************************************************************************
 	 * Create a new SubCategory
@@ -81,8 +82,52 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 	@Override
 	public List<SubCategoryDto> getAllSubCategoryByCategoryId(String id) {
 
-		return subCategoryRepo.findAllByCategory(categoryRepo.findById(id).orElse(null)).stream().map(this::getSubCategoryDtoFromEntity)
-				.collect(Collectors.toList());
+		return subCategoryRepo.findAllByCategory(categoryRepo.findById(id).orElse(null)).stream()
+				.map(this::getSubCategoryDtoFromEntity).collect(Collectors.toList());
+	}
+
+	/*************************************************************************
+	 * Get SubCategory {@link SubCategory} by Id
+	 * 
+	 * @return {@link SubCategory}
+	 *************************************************************************/
+	@Override
+	public SubCategory getSubCategoryById(String id) {
+		return subCategoryRepo.findById(id).orElse(null);
+	}
+
+	/*************************************************************************
+	 * Update {@link SubCategory}
+	 * 
+	 * @param ob {@link SubCategory} object
+	 * @return {@link SubCategory}
+	 *************************************************************************/
+	@Override
+	public SubCategory update(SubCategory ob) {
+		try {
+			ob.setCategory(categoryRepo.findById(ob.getCategoryId()).orElse(null));
+			return subCategoryRepo.save(ob);
+		} catch (Exception e) {
+			log.warn("Failed to update  SubCategory: ", e);
+			return ob;
+		}
+	}
+
+	/*************************************************************************
+	 * Delete {@link SubCategory}
+	 * 
+	 * @param ob {@link SubCategory} object
+	 * @return {@link SubCategory}
+	 *************************************************************************/
+	@Override
+	public ResponseEntity<?> deleteById(String id) {
+		try {
+			subCategoryRepo.deleteById(id);
+			return new ResponseEntity<>("Deleted Succecfully.", HttpStatus.OK);
+		} catch (Exception e) {
+			log.warn("Failed to update  SubCategory: ", e);
+			return new ResponseEntity<>("Deleted Succecfully.", HttpStatus.BAD_REQUEST);
+		}
 	}
 
 	public SubCategoryDto getSubCategoryDtoFromEntity(SubCategory ob) {

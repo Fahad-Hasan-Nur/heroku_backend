@@ -4,8 +4,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.http.ResponseEntity;
+
 
 import com.spring.ecommerce.dto.SubCategoryDto;
 import com.spring.ecommerce.model.SubCategory;
@@ -46,4 +46,29 @@ public interface SubCategoryService {
 	 * @return {@link List< SubCategory>}
 	 *************************************************************************/
 	List<SubCategoryDto> getAllSubCategoryByCategoryId(String id);
+
+	/*************************************************************************
+	 * Get SubCategory {@link SubCategory} by Id
+	 * 
+	 * @return {@link SubCategory}
+	 *************************************************************************/
+	SubCategory getSubCategoryById(String id);
+
+	/*************************************************************************
+	 * Update {@link SubCategory}
+	 * 
+	 * @param ob {@link SubCategory} object
+	 * @param rs
+	 * @return {@link SubCategory}
+	 *************************************************************************/
+	SubCategory update(SubCategory ob);
+
+	/*************************************************************************
+	 * Delete {@link SubCategory}
+	 * 
+	 * @param ob {@link SubCategory} object
+	 * @param rs
+	 * @return {@link SubCategory}
+	 *************************************************************************/
+	ResponseEntity<?> deleteById(String id);
 }

@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
  * {@link Auth} Controller
  * 
  * @author Fahad Hasan
- * @since 2021-02-3
+ * @since 2021-02-03
  *************************************************************************/
 @RestController
 @RequestMapping("/api/auth")
@@ -31,8 +31,7 @@ import lombok.RequiredArgsConstructor;
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class AuthController {
 
-	@Autowired
-	private AuthService service;
+	private final AuthService service;
 
 	/*************************************************************************
 	 * User Login
@@ -41,9 +40,21 @@ public class AuthController {
 	 * @param rs {@link HttpServletResponse} object
 	 * @return {@link JWT}
 	 *************************************************************************/
-	@PostMapping("/login")
+	@PostMapping("/user/login")
 	public ResponseEntity<?> userLogin(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
-		return service.createToken(authenticationRequest);
+		return service.createTokenForUser(authenticationRequest);
+	}
+	
+	/*************************************************************************
+	 * Admin Login
+	 * 
+	 * @param ob {@link AuthenticationRequest} object
+	 * @param rs {@link HttpServletResponse} object
+	 * @return {@link JWT}
+	 *************************************************************************/
+	@PostMapping("/admin/login")
+	public ResponseEntity<?> adminLogin(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+		return service.createTokenForAdmin(authenticationRequest);
 	}
 
 	/*************************************************************************

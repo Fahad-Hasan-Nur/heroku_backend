@@ -30,8 +30,7 @@ import lombok.RequiredArgsConstructor;
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class OtpController {
 
-	@Autowired
-	OtpService service;
+	private final OtpService service;
 
 	/*************************************************************************
 	 * Send OTP to Number
@@ -41,7 +40,7 @@ public class OtpController {
 	 * @return {@link OTP}
 	 *************************************************************************/
 	@PostMapping("/sendOtp/{mobileNumber}")
-	public ResponseEntity<?> addBrand(@PathVariable String mobileNumber, HttpServletResponse rs) {
+	public ResponseEntity<?> sendOtp(@PathVariable String mobileNumber, HttpServletResponse rs) {
 		return service.sendOtp(mobileNumber, rs);
 	}
 

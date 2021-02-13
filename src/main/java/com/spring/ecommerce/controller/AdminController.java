@@ -2,12 +2,12 @@ package com.spring.ecommerce.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,101 +18,87 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.ecommerce.dto.SubCategoryDto;
-import com.spring.ecommerce.model.SubCategory;
-import com.spring.ecommerce.service.SubCategoryService;
-
+import com.spring.ecommerce.model.Admin;
+import com.spring.ecommerce.service.AdminService;
 import lombok.RequiredArgsConstructor;
 
 /*************************************************************************
- * {@link SubCategory} Controller
+ * {@link Admin} Controller
  * 
  * @author Fahad Hasan
- * @since 2021-01-31
+ * @since 2021-02-13
  *************************************************************************/
 @RestController
-@RequestMapping("/api/subCategory")
+@RequestMapping("/api/admin")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @CrossOrigin(origins = "*", maxAge = 3600)
-public class SubCategoryController {
+public class AdminController {
 
-	private final SubCategoryService service;
+	private final AdminService service;
 
 	/*************************************************************************
-	 * Create a new SubCategory
+	 * Create a new Admin
 	 * 
-	 * @param ob {@link SubCategory} object
+	 * @param ob {@link Admin} object
 	 * @param rs {@link HttpServletResponse} object
-	 * @return {@link SubCategory}
+	 * @return {@link Admin}
 	 *************************************************************************/
 	@PostMapping
-	public SubCategory addProduct(@RequestBody SubCategory subCategory, HttpServletRequest rq, HttpServletResponse rs) {
-		subCategory.setCreatedBy(Long.valueOf(rq.getHeader("createdBy")));
-		subCategory.setCreatedByEmp(rq.getHeader("createdByEmp") + " (ID:" + rq.getHeader("createdBy") + ")");
-		rs.setStatus(HttpServletResponse.SC_CREATED);
-		return service.create(subCategory, rs);
+	public Admin addAdmin(@RequestBody @Validated Admin admin) {
+		return service.create(admin);
 	}
 
 	/*************************************************************************
-	 * Get all Product {@link SubCategory}
+	 * Get all Admin {@link Admin}
 	 * 
-	 * @return {@link List< SubCategory>}
+	 * @return {@link List< Admin>}
 	 *************************************************************************/
 	@GetMapping("/getAll")
-	public List<SubCategoryDto> getAllSubCategory() {
-		return service.getAllSubCategory();
+	public List<Admin> getAllAdmin() {
+		return service.getAllAdmin();
 	}
 
 	/*************************************************************************
-	 * Get all active {@link SubCategory}
+	 * Get Admin {@link Admin} by Id
 	 * 
-	 * @return {@link List< SubCategory>}
-	 *************************************************************************/
-	@GetMapping("/getAll/active")
-	public List<SubCategoryDto> getAllActiveSubCategory() {
-		return service.getAllActiveSubCategory();
-	}
-
-	/*************************************************************************
-	 * Get all SubCategory {@link SubCategory} by Category Id
-	 * 
-	 * @return {@link List< SubCategory>}
-	 *************************************************************************/
-	@GetMapping("/getAll/{id}")
-	public List<SubCategoryDto> getAllSubCategoryByCategoryId(@PathVariable String id) {
-		return service.getAllSubCategoryByCategoryId(id);
-	}
-
-	/*************************************************************************
-	 * Get SubCategory {@link SubCategory} by Id
-	 * 
-	 * @return {@link SubCategory}
+	 * @return {@link Admin}
 	 *************************************************************************/
 
 	@GetMapping("/{id}")
-	public SubCategory getSubCategoryById(@PathVariable String id) {
-		return service.getSubCategoryById(id);
+	public Admin getAdminById(@PathVariable String id) {
+		return service.getAdminById(id);
+	}
+	
+	/*************************************************************************
+	 * Get Admin {@link Admin} by Email
+	 * 
+	 * @return {@link Admin}
+	 *************************************************************************/
+
+	@GetMapping("/{email}")
+	public Admin getAdminByEmail(@PathVariable String email) {
+		return service.getAdminByEmail(email);
 	}
 
 	/*************************************************************************
-	 * Update {@link SubCategory}
+	 * Update {@link Admin}
 	 * 
-	 * @param ob {@link SubCategory} object
-	 * @return {@link SubCategory}
+	 * @param ob {@link Admin} object
+	 * @return {@link Admin}
 	 *************************************************************************/
 	@PutMapping
-	public SubCategory update(@Valid @RequestBody SubCategory ob) {
+	public Admin update(@Valid @RequestBody Admin ob) {
 		return service.update(ob);
 	}
 
 	/*************************************************************************
-	 * Delete {@link SubCategory}
+	 * Delete {@link Admin}
 	 * 
-	 * @param ob {@link SubCategory} object
-	 * @return {@link SubCategory}
+	 * @param ob {@link Admin} object
+	 * @return {@link Admin}
 	 *************************************************************************/
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete(@PathVariable String id) {
+	public ResponseEntity<?> delete( @PathVariable String id) {
 		return service.deleteById(id);
 	}
 }

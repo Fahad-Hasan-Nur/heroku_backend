@@ -23,16 +23,16 @@ import lombok.Setter;
 import lombok.ToString;
 
 /**
- * The persistent class for the ecommerce_user database table.
+ * The persistent class for the ecommerce_admin database table.
  *
  * @author Fahad Hasan
- * @since 2021-01-31
+ * @since 2021-02-13
  */
 @Data
 @Entity
-@Table(name = "ecommerce_user")
+@Table(name = "ecommerce_admin")
 @ToString(callSuper = true)
-public class User implements Serializable {
+public class Admin implements Serializable {
 	private static final long serialVersionUID = 4240005902936474749L;
 
 	@Id
@@ -68,6 +68,12 @@ public class User implements Serializable {
 
 	@NotNull
 	private String gender;
+	
+	@NotNull
+	private String phoneNumber;
+	
+	@NotNull
+	private String role;
 	
 	@NotNull
 	private boolean active;

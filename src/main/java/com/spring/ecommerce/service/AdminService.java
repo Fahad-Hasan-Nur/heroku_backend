@@ -2,64 +2,65 @@ package com.spring.ecommerce.service;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.ResponseEntity;
 
-import com.spring.ecommerce.dto.ProductDto;
-import com.spring.ecommerce.model.Product;
+import com.spring.ecommerce.model.Admin;
+import com.spring.ecommerce.model.Category;
 
 /*************************************************************************
- * {@link Product} service class
+ * {@link Category} service class
  * 
  * @author Fahad Hasan
- * @since 2021-1-29
+ * @since 2021-02-13
  *************************************************************************/
-public interface ProductService {
+public interface AdminService {
 
 	/*************************************************************************
-	 * Create a new Product
+	 * Create a new Admin
 	 * 
-	 * @param ob {@link Product} object
-	 * @return {@link Product}
+	 * @param ob {@link Admin} object
+	 * @param rs {@link HttpServletResponse} object
+	 * @return {@link Admin}
 	 *************************************************************************/
-	Product create(Product ob);
+	Admin create(Admin ob);
 
 	/*************************************************************************
-	 * Get all {@link Product}
+	 * Get all Admin {@link Admin}
 	 * 
-	 * @return {@link List<Product>}
+	 * @return {@link List< Admin>}
 	 *************************************************************************/
-	List<ProductDto> getAllProducts();
+	List<Admin> getAllAdmin();
 
 	/*************************************************************************
-	 * Get all {@link Product} by isActive Flag
+	 * Get Admin {@link Admin} by Id
 	 * 
-	 * @return {@link List<Product>}
+	 * @return {@link Admin}
 	 *************************************************************************/
-	List<ProductDto> getAllActiveProducts();
+	Admin getAdminById(String id);
 
 	/*************************************************************************
-	 * Get Product {@link Product} by Id
+	 * Get Admin {@link Admin} by Email
 	 * 
-	 * @return {@link Product}
+	 * @return {@link Email}
 	 *************************************************************************/
-	ProductDto getProductById(String id);
-
+	Admin getAdminByEmail(String email);
 	/*************************************************************************
-	 * Update {@link Product}
+	 * Update {@link Admin}
 	 * 
-	 * @param ob {@link Product} object
+	 * @param ob {@link Admin} object
 	 * @param rs
-	 * @return {@link Product}
+	 * @return {@link Admin}
 	 *************************************************************************/
-	Product update(Product ob);
+	Admin update(Admin ob);
 
 	/*************************************************************************
-	 * Delete {@link Product}
+	 * Delete {@link Admin}
 	 * 
-	 * @param ob {@link Product} object
+	 * @param ob {@link Admin} object
 	 * @param rs
-	 * @return {@link Product}
+	 * @return {@link Admin}
 	 *************************************************************************/
-	ResponseEntity<?> deleteById(String id);
+	ResponseEntity<?> deleteById(String id );
 }

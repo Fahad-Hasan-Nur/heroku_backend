@@ -4,11 +4,16 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,8 +36,7 @@ import lombok.RequiredArgsConstructor;
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class CategoryController {
 
-	@Autowired
-	private CategoryService service;
+	private final CategoryService service;
 
 	/*************************************************************************
 	 * Create a new Product
@@ -67,6 +71,38 @@ public class CategoryController {
 	@GetMapping("/getAll/active")
 	public List<CategoryDto> getAllActiveCategory() {
 		return service.getAllActiveCategory();
+	}
+
+	/*************************************************************************
+	 * Get Category {@link Category} by Id
+	 * 
+	 * @return {@link Category}
+	 *************************************************************************/
+	@GetMapping("/{id}")
+	public Category getCategoryById(@PathVariable String id) {
+		return service.getCategoryById(id);
+	}
+
+	/*************************************************************************
+	 * Update {@link Category}
+	 * 
+	 * @param ob {@link Category} object
+	 * @return {@link Category}
+	 *************************************************************************/
+	@PutMapping
+	public Category update(@Valid @RequestBody Category ob) {
+		return service.update(ob);
+	}
+
+	/*************************************************************************
+	 * Delete {@link Category}
+	 * 
+	 * @param ob {@link Category} object
+	 * @return {@link Category}
+	 *************************************************************************/
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> delete(@PathVariable String id) {
+		return service.deleteById(id);
 	}
 
 }

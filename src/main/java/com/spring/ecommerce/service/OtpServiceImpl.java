@@ -37,7 +37,6 @@ public class OtpServiceImpl implements OtpService {
 	}
 	
 	
-
 	/*************************************************************************
 	 * Send OTP to Number
 	 * 

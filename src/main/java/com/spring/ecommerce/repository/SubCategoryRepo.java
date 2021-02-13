@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.spring.ecommerce.dto.SubCategoryDto;
 import com.spring.ecommerce.model.Category;
 import com.spring.ecommerce.model.SubCategory;
 

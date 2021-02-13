@@ -4,11 +4,16 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,8 +36,7 @@ import lombok.RequiredArgsConstructor;
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class BrandController {
 
-	@Autowired
-	private BrandService service;
+	private final BrandService service;
 
 	/*************************************************************************
 	 * Create a new Brand
@@ -69,4 +73,37 @@ public class BrandController {
     	return service.getAllActiveBrand();
     }
 
+
+	/*************************************************************************
+	 * Get Brand {@link Brand} by Id
+	 * 
+	 * @return {@link Brand}
+	 *************************************************************************/
+
+	@GetMapping("/{id}")
+	public Brand getBrandById(@PathVariable String id) {
+		return service.getBrandById(id);
+	}
+
+	/*************************************************************************
+	 * Update {@link Brand}
+	 * 
+	 * @param ob {@link Brand} object
+	 * @return {@link Brand}
+	 *************************************************************************/
+	@PutMapping
+	public Brand update(@Valid @RequestBody Brand ob) {
+		return service.update(ob);
+	}
+
+	/*************************************************************************
+	 * Delete {@link Brand}
+	 * 
+	 * @param ob {@link Brand} object
+	 * @return {@link Brand}
+	 *************************************************************************/
+	@DeleteMapping("/{id}")
+	public ResponseEntity<?> delete( @PathVariable String id) {
+		return service.deleteById(id);
+	}
 }

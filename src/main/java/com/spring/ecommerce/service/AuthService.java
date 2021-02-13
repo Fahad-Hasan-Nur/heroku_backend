@@ -8,11 +8,11 @@ import com.spring.ecommerce.model.User;
 import com.spring.ecommerce.security.jwt.AuthenticationRequest;
 
 /*************************************************************************
-* {@link  Auth} service class 
-* 
-* @author Fahad Hasan
-* @since  2021-02-03
-*************************************************************************/
+ * {@link Auth} service class
+ * 
+ * @author Fahad Hasan
+ * @since 2021-02-03
+ *************************************************************************/
 public interface AuthService {
 
 	/*************************************************************************
@@ -22,6 +22,7 @@ public interface AuthService {
 	 * @return {@link User}
 	 *************************************************************************/
 	String create(User ob, HttpServletResponse rs);
+
 	/*************************************************************************
 	 * Activate newly created USer
 	 * 
@@ -29,14 +30,25 @@ public interface AuthService {
 	 * @param rs {@link HttpServletResponse} object
 	 * @return {@link String}
 	 *************************************************************************/
-	String confirmUserAccount( String token, HttpServletResponse rs);
+	String confirmUserAccount(String token, HttpServletResponse rs);
+
 	/*************************************************************************
 	 * User Login
 	 * 
 	 * @param ob {@link AuthenticationRequest} object
 	 * @param rs {@link HttpServletResponse} object
 	 * @return {@link JWT}
-	 * @throws Exception 
+	 * @throws Exception
 	 *************************************************************************/
-	 ResponseEntity<?> createToken(AuthenticationRequest authenticationRequest) throws Exception;
+	ResponseEntity<?> createTokenForUser(AuthenticationRequest authenticationRequest) throws Exception;
+
+	/*************************************************************************
+	 * Admin Login
+	 * 
+	 * @param ob {@link AuthenticationRequest} object
+	 * @param rs {@link HttpServletResponse} object
+	 * @return {@link JWT}
+	 * @throws Exception
+	 *************************************************************************/
+	ResponseEntity<?> createTokenForAdmin(AuthenticationRequest authenticationRequest) throws Exception;
 }

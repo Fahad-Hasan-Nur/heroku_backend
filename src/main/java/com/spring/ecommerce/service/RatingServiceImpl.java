@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.spring.ecommerce.model.Rating;
 import com.spring.ecommerce.repository.RatingRepo;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /*************************************************************************
@@ -22,10 +23,10 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Transactional
 @Slf4j
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class RatingServiceImpl implements RatingService {
 
-	@Autowired
-	private RatingRepo ratingRepo;
+	private final RatingRepo ratingRepo;
 
 	/*************************************************************************
 	 * Create a new Rating

@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.ResponseEntity;
+
 import com.spring.ecommerce.dto.CategoryDto;
 import com.spring.ecommerce.model.Category;
 
@@ -35,4 +37,29 @@ public interface CategoryService {
      * @return {@link List<Category>}
      *************************************************************************/
 	List<CategoryDto> getAllActiveCategory();
+	
+	/*************************************************************************
+	 * Get Category {@link Category} by Id
+	 * 
+	 * @return {@link Category}
+	 *************************************************************************/
+	Category getCategoryById(String id);
+
+	/*************************************************************************
+	 * Update {@link Category}
+	 * 
+	 * @param ob {@link Category} object
+	 * @param rs
+	 * @return {@link Category}
+	 *************************************************************************/
+	Category update(Category ob);
+
+	/*************************************************************************
+	 * Delete {@link Category}
+	 * 
+	 * @param ob {@link Category} object
+	 * @param rs
+	 * @return {@link Category}
+	 *************************************************************************/
+	ResponseEntity<?> deleteById(String id );
 }
