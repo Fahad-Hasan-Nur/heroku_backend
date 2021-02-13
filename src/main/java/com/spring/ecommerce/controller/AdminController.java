@@ -3,7 +3,6 @@ package com.spring.ecommerce.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -68,7 +67,7 @@ public class AdminController {
 	public Admin getAdminById(@PathVariable String id) {
 		return service.getAdminById(id);
 	}
-	
+
 	/*************************************************************************
 	 * Get Admin {@link Admin} by Email
 	 * 
@@ -87,7 +86,7 @@ public class AdminController {
 	 * @return {@link Admin}
 	 *************************************************************************/
 	@PutMapping
-	public Admin update(@Valid @RequestBody Admin ob) {
+	public Admin update(@RequestBody Admin ob) {
 		return service.update(ob);
 	}
 
@@ -98,7 +97,7 @@ public class AdminController {
 	 * @return {@link Admin}
 	 *************************************************************************/
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete( @PathVariable String id) {
+	public ResponseEntity<?> delete(@PathVariable String id) {
 		return service.deleteById(id);
 	}
 }

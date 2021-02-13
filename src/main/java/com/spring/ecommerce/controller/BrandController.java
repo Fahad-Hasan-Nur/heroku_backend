@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -63,16 +62,15 @@ public class BrandController {
 		return service.getAllBrand();
 	}
 
-	 /*************************************************************************
-     * Get all  active {@link  Brand}
-     * 
-     * @return {@link List< Brand>}
-     *************************************************************************/
-    @GetMapping("/getAll/active")
-    public List<BrandDto> getAllActiveBrand() {
-    	return service.getAllActiveBrand();
-    }
-
+	/*************************************************************************
+	 * Get all active {@link Brand}
+	 * 
+	 * @return {@link List< Brand>}
+	 *************************************************************************/
+	@GetMapping("/getAll/active")
+	public List<BrandDto> getAllActiveBrand() {
+		return service.getAllActiveBrand();
+	}
 
 	/*************************************************************************
 	 * Get Brand {@link Brand} by Id
@@ -92,7 +90,7 @@ public class BrandController {
 	 * @return {@link Brand}
 	 *************************************************************************/
 	@PutMapping
-	public Brand update(@Valid @RequestBody Brand ob) {
+	public Brand update(@RequestBody Brand ob) {
 		return service.update(ob);
 	}
 
@@ -103,7 +101,7 @@ public class BrandController {
 	 * @return {@link Brand}
 	 *************************************************************************/
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete( @PathVariable String id) {
+	public ResponseEntity<?> delete(@PathVariable String id) {
 		return service.deleteById(id);
 	}
 }

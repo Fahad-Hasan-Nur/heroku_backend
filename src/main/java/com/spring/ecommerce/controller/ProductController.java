@@ -3,7 +3,6 @@ package com.spring.ecommerce.controller;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +45,7 @@ public class ProductController {
 	 *************************************************************************/
 	@PostMapping
 	public Product addProduct(@RequestBody Product product) {
-		
+
 		return service.create(product);
 	}
 
@@ -60,22 +59,22 @@ public class ProductController {
 		return service.getAllProducts();
 	}
 
-	 /*************************************************************************
-     * Get all  active {@link  Product}
-     * 
-     * @return {@link List< Product>}
-     *************************************************************************/
-    @GetMapping("/getAll/active")
-    public List<ProductDto> getAllActiveProduct() {
-    	return service.getAllActiveProducts();
-    }
+	/*************************************************************************
+	 * Get all active {@link Product}
+	 * 
+	 * @return {@link List< Product>}
+	 *************************************************************************/
+	@GetMapping("/getAll/active")
+	public List<ProductDto> getAllActiveProduct() {
+		return service.getAllActiveProducts();
+	}
 
-    /*************************************************************************
-     * Get Product {@link  Product} by Id
-     * 
-     * @return {@link  Product}
-     *************************************************************************/
-	
+	/*************************************************************************
+	 * Get Product {@link Product} by Id
+	 * 
+	 * @return {@link Product}
+	 *************************************************************************/
+
 	@GetMapping("/{id}")
 	public ProductDto getProductById(@PathVariable String id) {
 		return service.getProductById(id);
@@ -88,7 +87,7 @@ public class ProductController {
 	 * @return {@link Product}
 	 *************************************************************************/
 	@PutMapping
-	public Product update(@Valid @RequestBody Product ob) {
+	public Product update(@RequestBody Product ob) {
 		return service.update(ob);
 	}
 
@@ -99,7 +98,7 @@ public class ProductController {
 	 * @return {@link Product}
 	 *************************************************************************/
 	@DeleteMapping("/{id}")
-	public ResponseEntity<?> delete( @PathVariable String id) {
+	public ResponseEntity<?> delete(@PathVariable String id) {
 		return service.deleteById(id);
 	}
 }
