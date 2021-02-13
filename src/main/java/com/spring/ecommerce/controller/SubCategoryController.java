@@ -101,7 +101,7 @@ public class SubCategoryController {
 	 * @return {@link SubCategory}
 	 *************************************************************************/
 	@PutMapping
-	public SubCategory update(@Valid @RequestBody SubCategory ob) {
+	public SubCategory update( @RequestBody SubCategory ob) {
 		return service.update(ob);
 	}
 
