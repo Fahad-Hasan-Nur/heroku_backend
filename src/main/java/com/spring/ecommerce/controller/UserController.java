@@ -44,7 +44,7 @@ public class UserController {
 	 * @param ob {@link User} object
 	 * @return {@link User}
 	 *************************************************************************/
-	@DeleteMapping("/{id}")
+	@DeleteMapping("/getById/{id}")
 	public ResponseEntity<?> delete(@PathVariable String id) {
 		return service.deleteById(id);
 	}
@@ -55,7 +55,7 @@ public class UserController {
 	 * @return {@link User}
 	 *************************************************************************/
 
-	@GetMapping("/{email}")
+	@GetMapping("/getByEmail/{email}")
 	public User getUserByEmail(@PathVariable String email) {
 		return service.getUserByEmail(email);
 	}

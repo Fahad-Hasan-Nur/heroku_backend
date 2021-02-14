@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.spring.ecommerce.dto.AdminDto;
 import com.spring.ecommerce.model.Admin;
 import com.spring.ecommerce.service.AdminService;
 import lombok.RequiredArgsConstructor;
@@ -53,7 +54,7 @@ public class AdminController {
 	 * @return {@link List< Admin>}
 	 *************************************************************************/
 	@GetMapping("/getAll")
-	public List<Admin> getAllAdmin() {
+	public List<AdminDto> getAllAdmin() {
 		return service.getAllAdmin();
 	}
 
@@ -63,9 +64,9 @@ public class AdminController {
 	 * @return {@link Admin}
 	 *************************************************************************/
 
-	@GetMapping("/{id}")
-	public Admin getAdminById(@PathVariable String id) {
-		return service.getAdminById(id);
+	@GetMapping("/getById/{id}")
+	public AdminDto getAdminDtoById(@PathVariable String id) {
+		return service.getAdminDtoById(id);
 	}
 
 	/*************************************************************************
@@ -74,9 +75,9 @@ public class AdminController {
 	 * @return {@link Admin}
 	 *************************************************************************/
 
-	@GetMapping("/{email}")
-	public Admin getAdminByEmail(@PathVariable String email) {
-		return service.getAdminByEmail(email);
+	@GetMapping("/getByEmail/{email}")
+	public AdminDto getAdminDtoByEmail(@PathVariable String email) {
+		return service.getAdminDtoByEmail(email);
 	}
 
 	/*************************************************************************

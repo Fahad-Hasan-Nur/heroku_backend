@@ -1,15 +1,18 @@
 package com.spring.ecommerce.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.spring.ecommerce.dto.AdminDto;
 import com.spring.ecommerce.model.Admin;
 import com.spring.ecommerce.repository.AdminRepo;
 import com.spring.ecommerce.repository.ImageRepo;
@@ -56,8 +59,9 @@ public class AdminServiceImpl implements AdminService{
 	 * @return {@link List< Admin>}
 	 *************************************************************************/
 	@Override
-	public List<Admin> getAllAdmin() {
-		return adminRepo.findAll();
+	public List<AdminDto> getAllAdmin() {
+		return adminRepo.findAll().stream().map(this::getAdminDtoFromEntity)
+				.collect(Collectors.toList());
 	}
 
 	/*************************************************************************
@@ -66,8 +70,8 @@ public class AdminServiceImpl implements AdminService{
      * @return {@link  Admin}
      *************************************************************************/
 	@Override
-	public Admin getAdminById(String id) {
-		return adminRepo.findById(id).orElse(null);
+	public AdminDto getAdminDtoById(String id) {
+		return adminRepo.findById(id).map(this::getAdminDtoFromEntity).orElse(null);
 	}
 	
 	/*************************************************************************
@@ -76,8 +80,8 @@ public class AdminServiceImpl implements AdminService{
      * @return {@link  Admin}
      *************************************************************************/
 	@Override
-	public Admin getAdminByEmail(String email) {
-		return adminRepo.findByEmail(email);
+	public AdminDto getAdminDtoByEmail(String email) {
+		return this.getAdminDtoFromEntity(adminRepo.findByEmail(email));
 	}
 	/*************************************************************************
 	 * Update {@link  Admin}
@@ -110,6 +114,15 @@ public class AdminServiceImpl implements AdminService{
 			log.warn("Failed to update  Product: ", e);
 			return new ResponseEntity<>("Deleted Succecfully.", HttpStatus.BAD_REQUEST);
 		}
+	}
+	
+	public AdminDto getAdminDtoFromEntity(Admin ob) {
+		if(ob.getImage()!=null) {
+			ob.setImageId(ob.getImage().getId());
+		}
+		AdminDto obj = new AdminDto();
+		BeanUtils.copyProperties(ob, obj);
+		return obj;
 	}
 
 }

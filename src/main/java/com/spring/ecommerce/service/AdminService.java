@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.ResponseEntity;
 
+import com.spring.ecommerce.dto.AdminDto;
 import com.spring.ecommerce.model.Admin;
 import com.spring.ecommerce.model.Category;
 
@@ -31,21 +32,21 @@ public interface AdminService {
 	 * 
 	 * @return {@link List< Admin>}
 	 *************************************************************************/
-	List<Admin> getAllAdmin();
+	List<AdminDto> getAllAdmin();
 
 	/*************************************************************************
 	 * Get Admin {@link Admin} by Id
 	 * 
 	 * @return {@link Admin}
 	 *************************************************************************/
-	Admin getAdminById(String id);
+	AdminDto getAdminDtoById(String id);
 
 	/*************************************************************************
 	 * Get Admin {@link Admin} by Email
 	 * 
 	 * @return {@link Email}
 	 *************************************************************************/
-	Admin getAdminByEmail(String email);
+	AdminDto getAdminDtoByEmail(String email);
 	/*************************************************************************
 	 * Update {@link Admin}
 	 * 
