@@ -64,7 +64,7 @@ public class AuthController {
 	 * @param rs {@link HttpServletResponse} object
 	 * @return {@link User}
 	 *************************************************************************/
-	@PostMapping("/register")
+	@PostMapping("/user/register")
 	public String registerUser(@RequestBody User user, HttpServletResponse rs) {
 
 		rs.setStatus(HttpServletResponse.SC_CREATED);
