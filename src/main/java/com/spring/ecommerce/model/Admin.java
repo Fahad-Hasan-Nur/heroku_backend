@@ -70,6 +70,7 @@ public class Admin implements Serializable {
 	private String gender;
 	
 	@NotNull
+	@Column(unique = true)
 	private String phoneNumber;
 	
 	@NotNull
