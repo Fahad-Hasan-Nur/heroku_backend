@@ -17,8 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.ecommerce.dto.AdminDto;
-import com.spring.ecommerce.model.Admin;
+import com.spring.ecommerce.dto.UserDto;
+import com.spring.ecommerce.model.User;
 import com.spring.ecommerce.service.AdminService;
 import lombok.RequiredArgsConstructor;
 
@@ -44,7 +44,7 @@ public class AdminController {
 	 * @return {@link Admin}
 	 *************************************************************************/
 	@PostMapping
-	public Admin addAdmin(@RequestBody @Validated Admin admin) {
+	public User addAdmin(@RequestBody @Validated User admin) {
 		return service.create(admin);
 	}
 
@@ -54,7 +54,7 @@ public class AdminController {
 	 * @return {@link List< Admin>}
 	 *************************************************************************/
 	@GetMapping("/getAll")
-	public List<AdminDto> getAllAdmin() {
+	public List<UserDto> getAllAdmin() {
 		return service.getAllAdmin();
 	}
 
@@ -65,8 +65,8 @@ public class AdminController {
 	 *************************************************************************/
 
 	@GetMapping("/getById/{id}")
-	public AdminDto getAdminDtoById(@PathVariable String id) {
-		return service.getAdminDtoById(id);
+	public UserDto getUserDtoById(@PathVariable String id) {
+		return service.getUserDtoById(id);
 	}
 
 	/*************************************************************************
@@ -76,8 +76,8 @@ public class AdminController {
 	 *************************************************************************/
 
 	@GetMapping("/getByEmail/{email}")
-	public AdminDto getAdminDtoByEmail(@PathVariable String email) {
-		return service.getAdminDtoByEmail(email);
+	public UserDto getUserDtoByEmail(@PathVariable String email) {
+		return service.getUserDtoByEmail(email);
 	}
 
 	/*************************************************************************
@@ -87,7 +87,7 @@ public class AdminController {
 	 * @return {@link Admin}
 	 *************************************************************************/
 	@PutMapping
-	public Admin update(@RequestBody Admin ob) {
+	public User update(@RequestBody User ob) {
 		return service.update(ob);
 	}
 

@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
 	// TODO remove
 	@Override
 	public List<UserDto> getAllUser() {
-		return userRepo.findAll().stream().map(this::getUserDtoFromEntity).collect(Collectors.toList());
+		return userRepo.findAllByType("user").stream().map(this::getUserDtoFromEntity).collect(Collectors.toList());
 	}
 
 	@Override

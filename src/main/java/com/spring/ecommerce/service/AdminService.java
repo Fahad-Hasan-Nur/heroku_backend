@@ -6,9 +6,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.ResponseEntity;
 
-import com.spring.ecommerce.dto.AdminDto;
-import com.spring.ecommerce.model.Admin;
+import com.spring.ecommerce.dto.UserDto;
 import com.spring.ecommerce.model.Category;
+import com.spring.ecommerce.model.User;
 
 /*************************************************************************
  * {@link Category} service class
@@ -25,28 +25,29 @@ public interface AdminService {
 	 * @param rs {@link HttpServletResponse} object
 	 * @return {@link Admin}
 	 *************************************************************************/
-	Admin create(Admin ob);
+	User create(User ob);
 
 	/*************************************************************************
 	 * Get all Admin {@link Admin}
 	 * 
 	 * @return {@link List< Admin>}
 	 *************************************************************************/
-	List<AdminDto> getAllAdmin();
+	List<UserDto> getAllAdmin();
 
 	/*************************************************************************
 	 * Get Admin {@link Admin} by Id
 	 * 
 	 * @return {@link Admin}
 	 *************************************************************************/
-	AdminDto getAdminDtoById(String id);
+	UserDto getUserDtoById(String id);
 
 	/*************************************************************************
 	 * Get Admin {@link Admin} by Email
 	 * 
 	 * @return {@link Email}
 	 *************************************************************************/
-	AdminDto getAdminDtoByEmail(String email);
+	UserDto getUserDtoByEmail(String email);
+
 	/*************************************************************************
 	 * Update {@link Admin}
 	 * 
@@ -54,7 +55,7 @@ public interface AdminService {
 	 * @param rs
 	 * @return {@link Admin}
 	 *************************************************************************/
-	Admin update(Admin ob);
+	User update(User ob);
 
 	/*************************************************************************
 	 * Delete {@link Admin}
@@ -63,5 +64,5 @@ public interface AdminService {
 	 * @param rs
 	 * @return {@link Admin}
 	 *************************************************************************/
-	ResponseEntity<?> deleteById(String id );
+	ResponseEntity<?> deleteById(String id);
 }

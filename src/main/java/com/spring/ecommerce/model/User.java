@@ -71,5 +71,16 @@ public class User implements Serializable {
 	
 	@NotNull
 	private boolean active;
+	
+	@NotNull
+	@Column(unique = true)
+	private String phoneNumber;
+	
+	@NotNull
+	private String role;
+	
+	@NotNull
+	private String type;
+	
 
 }

@@ -6,17 +6,15 @@ import lombok.Data;
 
 @Data
 public class UserDto {
-
-		private String id;
-		private String name;
-		private String email;
-		private String image;
-		private Date birthDate;
-		private String gender;
-		private boolean active;
-		private String imageId;
-		private String imageName;
-		
-		
-
+	private String id;
+	private String name;
+	private String email;
+	private Date birthDate;
+	private String gender;
+	private boolean active;
+	private String imageId;
+	private String imageName;
+	private String phoneNumber;
+	private String role;
+	private String type;
 }

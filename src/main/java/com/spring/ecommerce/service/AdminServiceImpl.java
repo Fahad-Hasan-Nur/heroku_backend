@@ -9,13 +9,15 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.spring.ecommerce.dto.AdminDto;
-import com.spring.ecommerce.model.Admin;
-import com.spring.ecommerce.repository.AdminRepo;
+
+import com.spring.ecommerce.dto.UserDto;
+import com.spring.ecommerce.model.User;
 import com.spring.ecommerce.repository.ImageRepo;
+import com.spring.ecommerce.repository.UserRepo;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +35,7 @@ import lombok.extern.slf4j.Slf4j;
 public class AdminServiceImpl implements AdminService{
 	
 	private final ImageRepo imageRepo;
-	private final AdminRepo adminRepo;
+	private final UserRepo adminRepo;
 
 	/*************************************************************************
 	 * Create a new Admin
@@ -43,8 +45,11 @@ public class AdminServiceImpl implements AdminService{
 	 * @return {@link Admin}
 	 *************************************************************************/
 	@Override
-	public Admin create(Admin admin) {
+	public User create(User admin) {
 		try {
+			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+			admin.setType("admin");
+			admin.setPassword(passwordEncoder.encode(admin.getPassword()));
 			admin.setImage(imageRepo.findById(admin.getImageId()).orElse(null));
 			return adminRepo.save(admin);
 		} catch (Exception e) {
@@ -59,8 +64,8 @@ public class AdminServiceImpl implements AdminService{
 	 * @return {@link List< Admin>}
 	 *************************************************************************/
 	@Override
-	public List<AdminDto> getAllAdmin() {
-		return adminRepo.findAll().stream().map(this::getAdminDtoFromEntity)
+	public List<UserDto> getAllAdmin() {
+		return adminRepo.findAllByType("admin").stream().map(this::getUserDtoFromEntity)
 				.collect(Collectors.toList());
 	}
 
@@ -70,8 +75,8 @@ public class AdminServiceImpl implements AdminService{
      * @return {@link  Admin}
      *************************************************************************/
 	@Override
-	public AdminDto getAdminDtoById(String id) {
-		return adminRepo.findById(id).map(this::getAdminDtoFromEntity).orElse(null);
+	public UserDto getUserDtoById(String id) {
+		return adminRepo.findById(id).map(this::getUserDtoFromEntity).orElse(null);
 	}
 	
 	/*************************************************************************
@@ -80,8 +85,8 @@ public class AdminServiceImpl implements AdminService{
      * @return {@link  Admin}
      *************************************************************************/
 	@Override
-	public AdminDto getAdminDtoByEmail(String email) {
-		return this.getAdminDtoFromEntity(adminRepo.findByEmail(email));
+	public UserDto getUserDtoByEmail(String email) {
+		return this.getUserDtoFromEntity(adminRepo.findByEmail(email));
 	}
 	/*************************************************************************
 	 * Update {@link  Admin}
@@ -90,7 +95,7 @@ public class AdminServiceImpl implements AdminService{
 	 * @return {@link  Admin}
 	 *************************************************************************/
 	@Override
-	public  Admin update(Admin ob) {
+	public  User update(User ob) {
 		try {
 			return adminRepo.save(ob);
 		} catch (Exception e) {
@@ -116,11 +121,11 @@ public class AdminServiceImpl implements AdminService{
 		}
 	}
 	
-	public AdminDto getAdminDtoFromEntity(Admin ob) {
+	public UserDto getUserDtoFromEntity(User ob) {
 		if(ob.getImage()!=null) {
 			ob.setImageId(ob.getImage().getId());
 		}
-		AdminDto obj = new AdminDto();
+		UserDto obj = new UserDto();
 		BeanUtils.copyProperties(ob, obj);
 		return obj;
 	}

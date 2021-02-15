@@ -16,9 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.spring.ecommerce.emailConfirmation.ConfirmationToken;
 import com.spring.ecommerce.emailConfirmation.ConfirmationTokenRepo;
 import com.spring.ecommerce.emailConfirmation.EmailConfig;
-import com.spring.ecommerce.model.Admin;
 import com.spring.ecommerce.model.User;
-import com.spring.ecommerce.repository.AdminRepo;
 import com.spring.ecommerce.repository.UserRepo;
 import com.spring.ecommerce.security.jwt.AuthenticationRequest;
 import com.spring.ecommerce.security.jwt.AuthenticationResponse;
@@ -42,8 +40,6 @@ public class AuthServiceImpl implements AuthService {
 	private  AuthenticationManager authenticationManager;
 	@Autowired
 	private  UserDetailsServiceImpl service;
-	@Autowired
-	private AdminRepo adminRepo;
 	@Autowired
 	private JwtProvider jwtProvider;
 	@Autowired
@@ -70,6 +66,7 @@ public class AuthServiceImpl implements AuthService {
 		} else {
 			try {
 				SimpleMailMessage mailMessage = new SimpleMailMessage();
+				user.setType("user");
 				user.setPassword(passwordEncoder.encode(user.getPassword()));
 				userRepo.save(user);
 				ConfirmationToken confirmationToken = new ConfirmationToken(user);
@@ -148,10 +145,9 @@ public class AuthServiceImpl implements AuthService {
 	 *************************************************************************/
 	@Override
 	public ResponseEntity<?> createTokenForAdmin(AuthenticationRequest authenticationRequest) throws Exception {
-
-		final Admin admin = adminRepo.findByEmailAndActive(authenticationRequest.getEmail(), true);
+		final User admin = userRepo.findByEmailAndActive(authenticationRequest.getEmail(), true);
 		if (admin == null) {
-			return ResponseEntity.ok("User not found");
+			return ResponseEntity.ok("Admin  dont Exist...");
 		}
 		try {
 			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getEmail(),
@@ -160,8 +156,12 @@ public class AuthServiceImpl implements AuthService {
 			throw new Exception("Incorrect Email Or Pasword.", e);
 		}
 		final UserDetails userDetails = service.loadUserByUsername(authenticationRequest.getEmail());
-		
+
 		final String jwt = jwtProvider.generateToken(userDetails);
+
+		System.out.println(jwt);
 		return ResponseEntity.ok(new AuthenticationResponse(jwt));
 	}
+	
+
 }
