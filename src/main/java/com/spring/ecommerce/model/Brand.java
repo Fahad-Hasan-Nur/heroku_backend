@@ -31,7 +31,7 @@ public class Brand extends AbstractPersistableEntity{
 	@NotNull
 	private String name;
 	
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	@NotNull
 	private String code;
 	

@@ -24,7 +24,7 @@ public interface CategoryService {
      * @param ob {@link Category} object
      * @return {@link Category}
      *************************************************************************/
-	Category create(Category ob,HttpServletResponse rs);
+	Category create(Category ob);
 	
 	  /*************************************************************************
      * Get all  {@link Category} 

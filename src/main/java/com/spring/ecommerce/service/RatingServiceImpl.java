@@ -35,12 +35,11 @@ public class RatingServiceImpl implements RatingService {
 	 * @return {@link Rating}
 	 *************************************************************************/
 	@Override
-	public Rating create(Rating ob, HttpServletResponse rs) {
+	public Rating create(Rating ob) {
 		try {
 			return ratingRepo.save(ob);
 		} catch (Exception e) {
 			log.warn("Failed to create  Product: ", e);
-			rs.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return ob;
 		}
 	}

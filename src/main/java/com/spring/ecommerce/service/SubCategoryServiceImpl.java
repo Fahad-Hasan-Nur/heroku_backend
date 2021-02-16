@@ -42,13 +42,12 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 	 * @return {@link SubCategory}
 	 *************************************************************************/
 	@Override
-	public SubCategory create(SubCategory subCategory, HttpServletResponse rs) {
+	public SubCategory create(SubCategory subCategory) {
 		try {
 			subCategory.setCategory(categoryRepo.findById(subCategory.getCategoryId()).orElse(null));
 			return subCategoryRepo.save(subCategory);
 		} catch (Exception e) {
 			log.warn("Failed to create  Product: ", e);
-			rs.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return subCategory;
 		}
 	}

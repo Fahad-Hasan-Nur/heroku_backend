@@ -45,11 +45,8 @@ public class SubCategoryController {
 	 * @return {@link SubCategory}
 	 *************************************************************************/
 	@PostMapping
-	public SubCategory addProduct(@RequestBody SubCategory subCategory, HttpServletRequest rq, HttpServletResponse rs) {
-		subCategory.setCreatedBy(Long.valueOf(rq.getHeader("createdBy")));
-		subCategory.setCreatedByEmp(rq.getHeader("createdByEmp") + " (ID:" + rq.getHeader("createdBy") + ")");
-		rs.setStatus(HttpServletResponse.SC_CREATED);
-		return service.create(subCategory, rs);
+	public SubCategory addProduct(@RequestBody SubCategory subCategory) {
+		return service.create(subCategory);
 	}
 
 	/*************************************************************************

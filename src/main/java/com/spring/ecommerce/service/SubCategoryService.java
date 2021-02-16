@@ -24,7 +24,7 @@ public interface SubCategoryService {
 	 * @param ob {@link SubCategory} object
 	 * @return {@link SubCategory}
 	 *************************************************************************/
-	SubCategory create(SubCategory ob, HttpServletResponse rs);
+	SubCategory create(SubCategory ob);
 
 	/*************************************************************************
 	 * Get all {@link SubCategory}

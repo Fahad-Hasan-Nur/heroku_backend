@@ -45,11 +45,8 @@ public class BrandController {
 	 * @return {@link Brand}
 	 *************************************************************************/
 	@PostMapping
-	public Brand addBrand(@RequestBody Brand brand, HttpServletRequest rq, HttpServletResponse rs) {
-		brand.setCreatedBy(Long.valueOf(rq.getHeader("createdBy")));
-		brand.setCreatedByEmp(rq.getHeader("createdByEmp") + " (ID:" + rq.getHeader("createdBy") + ")");
-		rs.setStatus(HttpServletResponse.SC_CREATED);
-		return service.create(brand, rs);
+	public Brand addBrand(@RequestBody Brand brand) {
+		return service.create(brand);
 	}
 
 	/*************************************************************************

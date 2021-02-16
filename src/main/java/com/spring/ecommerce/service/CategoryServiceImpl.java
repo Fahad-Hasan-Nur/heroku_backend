@@ -44,12 +44,11 @@ public class CategoryServiceImpl implements CategoryService {
 	 * @return {@link Category}
 	 *************************************************************************/
 	@Override
-	public Category create(Category category, HttpServletResponse rs) {
+	public Category create(Category category) {
 		try {
 			return categoryRepo.save(category);
 		} catch (Exception e) {
 			log.warn("Failed to create  Product: ", e);
-			rs.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
 			return category;
 		}
 	}

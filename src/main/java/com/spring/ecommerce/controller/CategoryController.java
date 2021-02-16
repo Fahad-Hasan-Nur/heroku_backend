@@ -45,11 +45,8 @@ public class CategoryController {
 	 * @return {@link Category}
 	 *************************************************************************/
 	@PostMapping
-	public Category addCategory(@RequestBody Category category, HttpServletRequest rq, HttpServletResponse rs) {
-		category.setCreatedBy(Long.valueOf(rq.getHeader("createdBy")));
-		category.setCreatedByEmp(rq.getHeader("createdByEmp") + " (ID:" + rq.getHeader("createdBy") + ")");
-		rs.setStatus(HttpServletResponse.SC_CREATED);
-		return service.create(category, rs);
+	public Category addCategory(@RequestBody Category category) {
+		return service.create(category);
 	}
 
 	/*************************************************************************

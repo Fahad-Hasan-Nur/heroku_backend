@@ -39,9 +39,8 @@ public class RatingController {
 	 * @return {@link Rating}
 	 *************************************************************************/
 	@PostMapping
-	public Rating addBrand(@RequestBody Rating rating, HttpServletResponse rs) {
-		rs.setStatus(HttpServletResponse.SC_CREATED);
-		return service.create(rating, rs);
+	public Rating addBrand(@RequestBody Rating rating) {
+		return service.create(rating);
 	}
 
 	/*************************************************************************

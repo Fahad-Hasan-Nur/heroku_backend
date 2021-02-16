@@ -24,7 +24,7 @@ public interface BrandService {
      * @param ob {@link  Brand} object
      * @return {@link  Brand}
      *************************************************************************/
-	 Brand create( Brand ob,HttpServletResponse rs);
+	 Brand create( Brand ob);
 	
 	  /*************************************************************************
      * Get all  {@link  Brand} 

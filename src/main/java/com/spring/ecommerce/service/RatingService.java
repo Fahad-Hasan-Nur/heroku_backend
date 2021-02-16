@@ -18,7 +18,7 @@ public interface RatingService {
 	 * @param ob {@link Rating} object
 	 * @return {@link Rating}
 	 *************************************************************************/
-	Rating create(Rating ob,HttpServletResponse rs);
+	Rating create(Rating ob);
 
 	/*************************************************************************
 	 * Get average Rating {@link Rating} by Product
