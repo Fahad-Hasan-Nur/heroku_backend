@@ -81,8 +81,8 @@ public class BrandServiceImpl implements BrandService {
      * @return {@link  Brand}
      *************************************************************************/
 	@Override
-	public Brand getBrandById(String id) {
-		return brandRepo.findById(id).orElse(null);
+	public BrandDto getBrandById(String id) {
+		return brandRepo.findById(id).map(this::getBrandDtoFromEntity).orElse(null);
 	}
 	/*************************************************************************
 	 * Update {@link  Brand}
@@ -120,6 +120,8 @@ public class BrandServiceImpl implements BrandService {
 		}
 	}
 	public BrandDto getBrandDtoFromEntity(Brand ob) {
+		ob.setImageId(ob.getImage().getId());
+		ob.setImageName(ob.getImage().getName());
 		BrandDto obj = new BrandDto();
 		BeanUtils.copyProperties(ob, obj);
 		return obj;

@@ -42,7 +42,7 @@ public interface BrandService {
 	 * 
 	 * @return {@link Brand}
 	 *************************************************************************/
-	Brand getBrandById(String id);
+	BrandDto getBrandById(String id);
 
 	/*************************************************************************
 	 * Update {@link Brand}
