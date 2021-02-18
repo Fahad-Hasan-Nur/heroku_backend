@@ -9,4 +9,6 @@ public class SubCategoryDto {
 	private String Name;
 	private String categoryId;
 	private String categoryName;
+	private String description;
+	private String code;
 }
