@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.ecommerce.dto.CategoryDto;
+import com.spring.ecommerce.model.Brand;
 import com.spring.ecommerce.model.Category;
 import com.spring.ecommerce.repository.CategoryRepo;
 import com.spring.ecommerce.repository.ProductRepo;
@@ -92,7 +93,9 @@ public class CategoryServiceImpl implements CategoryService {
 	@Override
 	public  Category update(Category ob) {
 		try {
-			return categoryRepo.save(ob);
+			Category c = categoryRepo.findById(ob.getId()).orElse(null);
+			BeanUtils.copyProperties(ob, c);
+			return categoryRepo.save(c);
 		} catch (Exception e) {
 			log.warn("Failed to update  Product: ", e);
 			return ob;

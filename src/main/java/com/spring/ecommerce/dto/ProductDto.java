@@ -18,4 +18,6 @@ public class ProductDto {
 	private String imageName;
 	private double price;
 	private int quantity;
+	private String createdBy;
+	private String updatedBy;
 }

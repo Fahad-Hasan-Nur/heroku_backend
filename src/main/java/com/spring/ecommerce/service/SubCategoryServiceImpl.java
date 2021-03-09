@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.ecommerce.dto.SubCategoryDto;
+import com.spring.ecommerce.model.Category;
 import com.spring.ecommerce.model.SubCategory;
 import com.spring.ecommerce.repository.CategoryRepo;
 import com.spring.ecommerce.repository.SubCategoryRepo;
@@ -105,7 +106,9 @@ public class SubCategoryServiceImpl implements SubCategoryService {
 	public SubCategory update(SubCategory ob) {
 		try {
 			ob.setCategory(categoryRepo.findById(ob.getCategoryId()).orElse(null));
-			return subCategoryRepo.save(ob);
+			SubCategory c = subCategoryRepo.findById(ob.getId()).orElse(null);
+			BeanUtils.copyProperties(ob, c);
+			return subCategoryRepo.save(c);
 		} catch (Exception e) {
 			log.warn("Failed to update  SubCategory: ", e);
 			return ob;

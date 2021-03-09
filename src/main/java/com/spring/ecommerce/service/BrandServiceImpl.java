@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.ecommerce.dto.BrandDto;
 import com.spring.ecommerce.model.Brand;
+import com.spring.ecommerce.model.User;
 import com.spring.ecommerce.repository.BrandRepo;
 import com.spring.ecommerce.repository.ImageRepo;
 import com.spring.ecommerce.repository.ProductRepo;
@@ -93,7 +94,10 @@ public class BrandServiceImpl implements BrandService {
 	@Override
 	public  Brand update(Brand ob) {
 		try {
-			return brandRepo.save(ob);
+			ob.setImage(imageRepo.findById(ob.getImageId()).orElse(null));
+			Brand b = brandRepo.findById(ob.getId()).orElse(null);
+			BeanUtils.copyProperties(ob, b);
+			return brandRepo.save(b);
 		} catch (Exception e) {
 			log.warn("Failed to update  Brand: ", e);
 			return ob;

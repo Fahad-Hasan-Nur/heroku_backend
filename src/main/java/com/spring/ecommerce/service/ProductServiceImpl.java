@@ -98,11 +98,14 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public Product update(Product product) {
 		try {
+			 Product existingProduct = productRepo.findById(product.getId()).orElse(null);
+ 
 			product.setBrand(brandRepo.findById(product.getBrandId()).orElse(null));
 			product.setCategory(categoryRepo.findById(product.getCategoryId()).orElse(null));
 			product.setSubCategory(typeRepo.findById(product.getSubCategoryId()).orElse(null));
 			product.setImage(imageRepo.findById(product.getImageId()).orElse(null));
-			return productRepo.save(product);
+			BeanUtils.copyProperties(product, existingProduct);
+			return productRepo.save(existingProduct);
 		} catch (Exception e) {
 			log.warn("Failed to update  Product: ", e);
 			return product;
@@ -129,7 +132,7 @@ public class ProductServiceImpl implements ProductService {
 	public ProductDto getProjectDtoFromEntity(Product ob) {
 		ob.setBrandId(ob.getBrand().getId());
 		ob.setBrandName(ob.getBrand().getName());
-		ob.setCategoryId(ob.getBrand().getId());
+		ob.setCategoryId(ob.getCategory().getId());
 		ob.setCategoryName(ob.getCategory().getName());
 		ob.setSubCategoryId(ob.getSubCategory().getId());
 		ob.setSubCategoryName(ob.getSubCategory().getName());

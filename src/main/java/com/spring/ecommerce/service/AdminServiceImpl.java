@@ -13,8 +13,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import com.spring.ecommerce.dto.UserDto;
+import com.spring.ecommerce.model.Product;
 import com.spring.ecommerce.model.User;
 import com.spring.ecommerce.repository.ImageRepo;
 import com.spring.ecommerce.repository.UserRepo;
@@ -32,8 +32,8 @@ import lombok.extern.slf4j.Slf4j;
 @Transactional
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Slf4j
-public class AdminServiceImpl implements AdminService{
-	
+public class AdminServiceImpl implements AdminService {
+
 	private final ImageRepo imageRepo;
 	private final UserRepo adminRepo;
 
@@ -65,53 +65,55 @@ public class AdminServiceImpl implements AdminService{
 	 *************************************************************************/
 	@Override
 	public List<UserDto> getAllAdmin() {
-		return adminRepo.findAllByType("admin").stream().map(this::getUserDtoFromEntity)
-				.collect(Collectors.toList());
+		return adminRepo.findAllByType("admin").stream().map(this::getUserDtoFromEntity).collect(Collectors.toList());
 	}
 
 	/*************************************************************************
-     * Get Admin {@link  Admin} by Id
-     * 
-     * @return {@link  Admin}
-     *************************************************************************/
+	 * Get Admin {@link Admin} by Id
+	 * 
+	 * @return {@link Admin}
+	 *************************************************************************/
 	@Override
 	public UserDto getUserDtoById(String id) {
 		return adminRepo.findById(id).map(this::getUserDtoFromEntity).orElse(null);
 	}
-	
+
 	/*************************************************************************
-     * Get Admin {@link  Admin} by Email
-     * 
-     * @return {@link  Admin}
-     *************************************************************************/
+	 * Get Admin {@link Admin} by Email
+	 * 
+	 * @return {@link Admin}
+	 *************************************************************************/
 	@Override
 	public UserDto getUserDtoByEmail(String email) {
 		return this.getUserDtoFromEntity(adminRepo.findByEmail(email));
 	}
+
 	/*************************************************************************
-	 * Update {@link  Admin}
+	 * Update {@link Admin}
 	 * 
-	 * @param ob {@link  Admin} object
-	 * @return {@link  Admin}
+	 * @param ob {@link Admin} object
+	 * @return {@link Admin}
 	 *************************************************************************/
 	@Override
-	public  User update(User ob) {
+	public User update(User ob) {
 		try {
-			return adminRepo.save(ob);
+			User existingUser = adminRepo.findById(ob.getId()).orElse(null);
+			BeanUtils.copyProperties(ob, existingUser);
+			return adminRepo.save(existingUser);
 		} catch (Exception e) {
 			log.warn("Failed to update  Product: ", e);
 			return ob;
 		}
 	}
-	
+
 	/*************************************************************************
-	 * Delete {@link  Admin}
+	 * Delete {@link Admin}
 	 * 
-	 * @param ob {@link  Admin} object
-	 * @return {@link  Admin}
+	 * @param ob {@link Admin} object
+	 * @return {@link Admin}
 	 *************************************************************************/
 	@Override
-	public  ResponseEntity<?> deleteById(String id) {
+	public ResponseEntity<?> deleteById(String id) {
 		try {
 			adminRepo.deleteById(id);
 			return new ResponseEntity<>("Deleted Succecfully.", HttpStatus.OK);
@@ -120,9 +122,9 @@ public class AdminServiceImpl implements AdminService{
 			return new ResponseEntity<>("Deleted Succecfully.", HttpStatus.BAD_REQUEST);
 		}
 	}
-	
+
 	public UserDto getUserDtoFromEntity(User ob) {
-		if(ob.getImage()!=null) {
+		if (ob.getImage() != null) {
 			ob.setImageId(ob.getImage().getId());
 		}
 		UserDto obj = new UserDto();
