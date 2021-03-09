@@ -47,19 +47,15 @@ public class AbstractPersistableEntity implements Serializable {
 
 
 	@Column(updatable = false, nullable = false)
-	private Long createdBy;
+	private String createdBy;
 
 	@Setter(value = AccessLevel.PRIVATE)
 	private LocalDateTime updatedAt;
 
-	private Long updatedBy;
+	private String updatedBy;
 	
 	@Column(nullable = false)
 	private boolean isActive = true;
-	
-	private String createdByEmp;
-	
-	private String updatedByEmp;
 	
 	@PrePersist
 	void onInsert() {
