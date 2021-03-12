@@ -9,12 +9,14 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+
 import com.spring.ecommerce.dto.UserDto;
-import com.spring.ecommerce.model.Product;
+import com.spring.ecommerce.emailConfirmation.EmailConfig;
 import com.spring.ecommerce.model.User;
 import com.spring.ecommerce.repository.ImageRepo;
 import com.spring.ecommerce.repository.UserRepo;
@@ -36,6 +38,7 @@ public class AdminServiceImpl implements AdminService {
 
 	private final ImageRepo imageRepo;
 	private final UserRepo adminRepo;
+	private final EmailConfig emailService;
 
 	/*************************************************************************
 	 * Create a new Admin
@@ -49,6 +52,8 @@ public class AdminServiceImpl implements AdminService {
 		try {
 			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 			admin.setType("admin");
+			admin.setActive(true);
+			admin.setVerified(true);
 			admin.setPassword(passwordEncoder.encode(admin.getPassword()));
 			admin.setImage(imageRepo.findById(admin.getImageId()).orElse(null));
 			return adminRepo.save(admin);
@@ -66,6 +71,25 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public List<UserDto> getAllAdmin() {
 		return adminRepo.findAllByType("admin").stream().map(this::getUserDtoFromEntity).collect(Collectors.toList());
+	}
+	
+	/*************************************************************************
+	 * Get all Active Dealers {@link Admin}
+	 * 
+	 * @return {@link List< Admin>}
+	 *************************************************************************/
+	@Override
+	public List<UserDto> getAllActiveDealers() {
+		return adminRepo.findAllByRoleAndActiveAndVerified("DEALER",true,true).stream().map(this::getUserDtoFromEntity).collect(Collectors.toList());
+	}
+	/*************************************************************************
+	 * Get all Admin {@link Admin}
+	 * 
+	 * @return {@link List< Admin>}
+	 *************************************************************************/
+	@Override
+	public List<UserDto> getAllInactiveDealers() {
+		return adminRepo.findAllByRoleAndActiveAndVerified("DEALER",true,false).stream().map(this::getUserDtoFromEntity).collect(Collectors.toList());
 	}
 
 	/*************************************************************************
@@ -98,6 +122,8 @@ public class AdminServiceImpl implements AdminService {
 	public User update(User ob) {
 		try {
 			User existingUser = adminRepo.findById(ob.getId()).orElse(null);
+			ob.setPassword(existingUser.getPassword());
+			ob.setImage(imageRepo.findById(ob.getImageId()).orElse(null));
 			BeanUtils.copyProperties(ob, existingUser);
 			return adminRepo.save(existingUser);
 		} catch (Exception e) {
@@ -123,6 +149,40 @@ public class AdminServiceImpl implements AdminService {
 		}
 	}
 
+	/*************************************************************************
+	 * Verify Dealer {@link Admin}
+	 * 
+	 * @return {@link Admin}
+	 *************************************************************************/
+
+	public User verifyDealer( String id) {
+		User ob=adminRepo.findById(id).orElse(null);
+		ob.setVerified(true);
+		adminRepo.save(ob);
+		this.sendConfirmation(ob);
+		return ob;
+	}
+	
+	/*************************************************************************
+	 * Send email to Dealer
+	 * 
+	 * @return  email
+	 *************************************************************************/
+	private void sendConfirmation(User user) {
+			try {
+				SimpleMailMessage mailMessage = new SimpleMailMessage();
+				mailMessage.setTo(user.getEmail());
+				mailMessage.setSubject("Verification Success!!!!");
+				mailMessage.setText("Login with your Email and Password from below link : "
+						+ "http://localhost:4200/page-not-found");
+				emailService.sendEmail(mailMessage);
+
+			} catch (Exception e) {
+				log.warn("Failed to create  User: ", e);
+			}
+		}
+	
+	
 	public UserDto getUserDtoFromEntity(User ob) {
 		if (ob.getImage() != null) {
 			ob.setImageId(ob.getImage().getId());

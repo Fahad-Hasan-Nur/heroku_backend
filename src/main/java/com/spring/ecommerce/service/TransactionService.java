@@ -2,91 +2,81 @@ package com.spring.ecommerce.service;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.spring.ecommerce.dto.UserDto;
-import com.spring.ecommerce.model.Category;
-import com.spring.ecommerce.model.User;
+import com.spring.ecommerce.dto.RequisitionDto;
+import com.spring.ecommerce.model.Requisition;
+import com.spring.ecommerce.model.Transaction;
 
 /*************************************************************************
- * {@link Category} service class
+ * {@link Transaction} service class
  * 
  * @author Fahad Hasan
- * @since 2021-02-13
+ * @since 2021-3-11
  *************************************************************************/
-public interface AdminService {
+public interface TransactionService {
+	/*************************************************************************
+	 * Create a new Transaction
+	 * 
+	 * @param ob {@link Transaction} object
+	 * @return {@link Transaction}
+	 *************************************************************************/
+	Transaction create(Transaction ob);
 
 	/*************************************************************************
-	 * Create a new Admin
+	 * Get Transaction {@link Transaction} by Requisition Id
 	 * 
-	 * @param ob {@link Admin} object
-	 * @param rs {@link HttpServletResponse} object
-	 * @return {@link Admin}
+	 * @return {@link Requisition}
 	 *************************************************************************/
-	User create(User ob);
 
-	/*************************************************************************
-	 * Get all Admin {@link Admin}
-	 * 
-	 * @return {@link List< Admin>}
-	 *************************************************************************/
-	List<UserDto> getAllAdmin();
+	 List<Transaction> getByRequisitionId(String id) ;
 	
 	/*************************************************************************
-	 * Get all Admin {@link Admin}
+	 * Get Transaction {@link Transaction} by User Id
 	 * 
-	 * @return {@link List< Admin>}
+	 * @return {@link Transaction}
 	 *************************************************************************/
-	List<UserDto> getAllActiveDealers();
-	
-	/*************************************************************************
-	 * Get all Admin {@link Admin}
-	 * 
-	 * @return {@link List< Admin>}
-	 *************************************************************************/
-	List<UserDto> getAllInactiveDealers();
+
+	 List<Transaction> getByUserId( String id);
 
 	/*************************************************************************
-	 * Get Admin {@link Admin} by Id
+	 * Update {@link Transaction}
 	 * 
-	 * @return {@link Admin}
+	 * @param ob {@link Transaction} object
+	 * @return {@link Transaction}
 	 *************************************************************************/
-	UserDto getUserDtoById(String id);
+	Transaction update(Transaction ob);
 
 	/*************************************************************************
-	 * Get Admin {@link Admin} by Email
+	 * Delete {@link Transaction}
 	 * 
-	 * @return {@link Email}
-	 *************************************************************************/
-	UserDto getUserDtoByEmail(String email);
-
-	/*************************************************************************
-	 * Update {@link Admin}
-	 * 
-	 * @param ob {@link Admin} object
+	 * @param ob {@link Transaction} object
 	 * @param rs
-	 * @return {@link Admin}
-	 *************************************************************************/
-	User update(User ob);
-
-	/*************************************************************************
-	 * Delete {@link Admin}
-	 * 
-	 * @param ob {@link Admin} object
-	 * @param rs
-	 * @return {@link Admin}
+	 * @return {@link Transaction}
 	 *************************************************************************/
 	ResponseEntity<?> deleteById(String id);
 	
 	/*************************************************************************
-	 * Verify Dealer {@link Admin}
+	 * Update transaction Staus {@link transaction}
 	 * 
-	 * @return {@link Admin}
+	 * @return {@link transaction}
 	 *************************************************************************/
 
-	 User verifyDealer( String id);
+	public Transaction processTransaction(String id);
+	/*************************************************************************
+	 * Update transaction Staus {@link transaction}
+	 * 
+	 * @return {@link transaction}
+	 *************************************************************************/
+
+	public Transaction completeTransaction(String id) ;
+	
+	/*************************************************************************
+	 * Get transaction {@link transaction} by Status
+	 * 
+	 * @return {@link transaction}
+	 *************************************************************************/
+	List<Transaction> getTransactionByStatus(String status);
 }

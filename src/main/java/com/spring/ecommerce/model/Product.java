@@ -36,6 +36,9 @@ public class Product extends AbstractPersistableEntity{
 			@NotNull
 			private String code;
 			
+			@NotNull
+			private String[] size;
+			
 			@ManyToOne
 			@JoinColumn(name = "brand_id",referencedColumnName = "id")
 			@JsonIgnore

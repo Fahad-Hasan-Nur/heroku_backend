@@ -44,6 +44,13 @@ public interface ProductService {
 	 * @return {@link Product}
 	 *************************************************************************/
 	ProductDto getProductById(String id);
+	
+	/*************************************************************************
+	 * Get Product {@link Product} by SubCategoryId
+	 * 
+	 * @return {@link Product}
+	 *************************************************************************/
+	List<ProductDto> getProductBySubCategoryId(String id);
 
 	/*************************************************************************
 	 * Update {@link Product}

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.spring.ecommerce.dto.ProductDto;
 import com.spring.ecommerce.model.Product;
+import com.spring.ecommerce.model.SubCategory;
 import com.spring.ecommerce.repository.BrandRepo;
 import com.spring.ecommerce.repository.CategoryRepo;
 import com.spring.ecommerce.repository.ImageRepo;
@@ -87,6 +88,16 @@ public class ProductServiceImpl implements ProductService {
 	 *************************************************************************/
 	public ProductDto getProductById(String id) {
 		return productRepo.findById(id).map(this::getProjectDtoFromEntity).orElse(null);
+	}
+	
+	/*************************************************************************
+	 * Get Product {@link Product} by SubCategory Id
+	 * 
+	 * @return {@link Product}
+	 *************************************************************************/
+	public List<ProductDto> getProductBySubCategoryId(String id) {
+		return productRepo.findAllBySubCategory(typeRepo.findById(id).orElse(null))
+				.stream().map(this::getProjectDtoFromEntity).collect(Collectors.toList());
 	}
 
 	/*************************************************************************

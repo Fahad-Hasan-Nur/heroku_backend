@@ -17,4 +17,7 @@ public class UserDto {
 	private String phoneNumber;
 	private String role;
 	private String type;
+	private String tinId;
+	private String nidId;
+	private boolean verified;
 }

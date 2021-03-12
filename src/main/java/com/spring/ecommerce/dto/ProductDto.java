@@ -20,4 +20,5 @@ public class ProductDto {
 	private int quantity;
 	private String createdBy;
 	private String updatedBy;
+	private String[] size;
 }

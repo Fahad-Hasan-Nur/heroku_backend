@@ -1,5 +1,7 @@
 package com.spring.ecommerce.service;
 
+import java.util.Properties;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import com.spring.ecommerce.emailConfirmation.ConfirmationToken;
 import com.spring.ecommerce.emailConfirmation.ConfirmationTokenRepo;
 import com.spring.ecommerce.emailConfirmation.EmailConfig;
 import com.spring.ecommerce.model.User;
+import com.spring.ecommerce.repository.ImageRepo;
 import com.spring.ecommerce.repository.UserRepo;
 import com.spring.ecommerce.security.jwt.AuthenticationRequest;
 import com.spring.ecommerce.security.jwt.AuthenticationResponse;
@@ -49,6 +52,8 @@ public class AuthServiceImpl implements AuthService {
 	@Autowired
 	EmailConfig emailService;
 	@Autowired
+	ImageRepo imageRepo;
+	@Autowired
 	private PasswordEncoder passwordEncoder;
 
 	/*************************************************************************
@@ -58,32 +63,33 @@ public class AuthServiceImpl implements AuthService {
 	 * @return {@link String}
 	 *************************************************************************/
 	@Override
-	public String create(User user, HttpServletResponse rs) {
+	public ResponseEntity<?> create(User user) {
 		User existingUser = userRepo.findByEmailIgnoreCase(user.getEmail());
 		if (existingUser != null) {
-			rs.setHeader("Denied", "User exists!!!");
-			return "User exists!!!";
+			return ResponseEntity.ok("User exists!!!");
 		} else {
 			try {
 				SimpleMailMessage mailMessage = new SimpleMailMessage();
 				user.setType("user");
 				user.setPassword(passwordEncoder.encode(user.getPassword()));
-				userRepo.save(user);
+				user.setImage(imageRepo.findById(user.getImageId()).orElse(null));
 				ConfirmationToken confirmationToken = new ConfirmationToken(user);
-				tokenRepo.save(confirmationToken);
 				mailMessage.setTo(user.getEmail());
 				mailMessage.setSubject("Complete Registration!");
 				mailMessage.setText("To confirm your account, please click here : "
 						+ "http://localhost:8080/api/auth/confirm-account?token="
 						+ confirmationToken.getConfirmationToken());
 				emailService.sendEmail(mailMessage);
+				userRepo.save(user);
+				tokenRepo.save(confirmationToken);
 			} catch (Exception e) {
-				log.warn("Failed to create  Product: ", e);
-				rs.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-				return "Failed to create  User ";
+				log.warn("Failed to create  User: ", e);
+				return ResponseEntity.ok("Failed to create  User ");
+
 			}
 		}
-		return "Account created. Check your mail for confirmation..";
+		return ResponseEntity.ok(user);
+
 	}
 
 	/*************************************************************************
@@ -145,7 +151,7 @@ public class AuthServiceImpl implements AuthService {
 	 *************************************************************************/
 	@Override
 	public ResponseEntity<?> createTokenForAdmin(AuthenticationRequest authenticationRequest) throws Exception {
-		final User admin = userRepo.findByEmailAndActive(authenticationRequest.getEmail(), true);
+		final User admin = userRepo.findByEmailAndActiveAndVerified(authenticationRequest.getEmail(), true,true);
 		if (admin == null) {
 			return ResponseEntity.ok("Admin  dont Exist...");
 		}

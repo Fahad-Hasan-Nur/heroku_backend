@@ -6,7 +6,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,118 +16,113 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.ecommerce.dto.UserDto;
+import com.spring.ecommerce.dto.RequisitionDto;
+import com.spring.ecommerce.model.Requisition;
+import com.spring.ecommerce.model.Transaction;
 import com.spring.ecommerce.model.User;
-import com.spring.ecommerce.service.AdminService;
+import com.spring.ecommerce.service.RequisitionService;
+import com.spring.ecommerce.service.TransactionService;
+
 import lombok.RequiredArgsConstructor;
 
 /*************************************************************************
- * {@link Admin} Controller
+ * {@link Transaction} Controller
  * 
  * @author Fahad Hasan
- * @since 2021-02-13
+ * @since 2021-03-11
  *************************************************************************/
 @RestController
-@RequestMapping("/api/admin")
+@RequestMapping("/api/transaction")
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @CrossOrigin(origins = "*", maxAge = 3600)
-public class AdminController {
-
-	private final AdminService service;
+public class TransactionController {
+	private final TransactionService service;
 
 	/*************************************************************************
-	 * Create a new Admin
+	 * Create a new Transaction
 	 * 
-	 * @param ob {@link Admin} object
-	 * @param rs {@link HttpServletResponse} object
-	 * @return {@link Admin}
+	 * @param ob {@link Transaction} object
+	 * @return {@link Transaction}
 	 *************************************************************************/
 	@PostMapping
-	public User addAdmin(@RequestBody @Validated User admin) {
-		return service.create(admin);
+	public Transaction addTransaction(@RequestBody Transaction transaction) {
+
+		return service.create(transaction);
 	}
 
+
 	/*************************************************************************
-	 * Get all Admin {@link Admin}
+	 * Get Transaction {@link Transaction} by Requisition Id
 	 * 
-	 * @return {@link List< Admin>}
+	 * @return {@link Requisition}
 	 *************************************************************************/
-	@GetMapping("/getAll/")
-	public List<UserDto> getAllAdmin() {
-		return service.getAllAdmin();
+
+	@GetMapping("/getAllByRequisitionId/{id}")
+	public List<Transaction> getByRequisitionId(@PathVariable String id) {
+		return service.getByRequisitionId(id);
 	}
 	
 	/*************************************************************************
-	 * Get all Active Dealer {@link Admin}
+	 * Get Transaction {@link Transaction} by User Id
 	 * 
-	 * @return {@link List< Admin>}
+	 * @return {@link Transaction}
 	 *************************************************************************/
-	@GetMapping("/getAll/activeDealer/")
-	public List<UserDto> getAllActiveDealers() {
-		return service.getAllActiveDealers();
-	}
-	/*************************************************************************
-	 * Get all Inactive Dealer {@link Admin}
-	 * 
-	 * @return {@link List< Admin>}
-	 *************************************************************************/
-	@GetMapping("/getAll/inactiveDealer/")
-	public List<UserDto> getAllInactiveDealers() {
-		return service.getAllInactiveDealers();
+
+	@GetMapping("/getAllByUserId/{id}")
+	public List<Transaction> getByUserId(@PathVariable String id) {
+		return service.getByUserId(id);
 	}
 
 	/*************************************************************************
-	 * Get Admin {@link Admin} by Id
+	 * Update {@link Transaction}
 	 * 
-	 * @return {@link Admin}
-	 *************************************************************************/
-
-	@GetMapping("/getById/{id}")
-	public UserDto getUserDtoById(@PathVariable String id) {
-		return service.getUserDtoById(id);
-	}
-
-	/*************************************************************************
-	 * Get Admin {@link Admin} by Email
-	 * 
-	 * @return {@link Admin}
-	 *************************************************************************/
-
-	@GetMapping("/getByEmail/{email}")
-	public UserDto getUserDtoByEmail(@PathVariable String email) {
-		return service.getUserDtoByEmail(email);
-	}
-	
-	/*************************************************************************
-	 * Verify Dealer {@link Admin}
-	 * 
-	 * @return {@link Admin}
-	 *************************************************************************/
-
-	@GetMapping("/verifyDealer/{id}")
-	public User verifyDealer(@PathVariable String id) {
-		return service.verifyDealer(id);
-	}
-
-	/*************************************************************************
-	 * Update {@link Admin}
-	 * 
-	 * @param ob {@link Admin} object
-	 * @return {@link Admin}
+	 * @param ob {@link Transaction} object
+	 * @return {@link Transaction}
 	 *************************************************************************/
 	@PutMapping
-	public User update(@RequestBody User ob) {
+	public Transaction update(@RequestBody Transaction ob) {
 		return service.update(ob);
 	}
 
 	/*************************************************************************
-	 * Delete {@link Admin}
+	 * Delete {@link Requisition}
 	 * 
-	 * @param ob {@link Admin} object
-	 * @return {@link Admin}
+	 * @param ob {@link Requisition} object
+	 * @return {@link Requisition}
 	 *************************************************************************/
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable String id) {
 		return service.deleteById(id);
+	}
+	/*************************************************************************
+	 * Update transaction Staus {@link transaction}
+	 * 
+	 * @return {@link transaction}
+	 *************************************************************************/
+
+	@GetMapping("/processTransaction/{id}")
+	public Transaction processTransaction(@PathVariable String id) {
+		return service.processTransaction(id);
+	}
+	/*************************************************************************
+	 * Update transaction Staus {@link transaction}
+	 * 
+	 * @return {@link transaction}
+	 *************************************************************************/
+
+	@GetMapping("/completeTransaction/{id}")
+	public Transaction completeTransaction(@PathVariable String id) {
+		return service.completeTransaction(id);
+	}
+	
+	/*************************************************************************
+	 * Get transaction {@link transaction} by Status
+	 * 
+	 * @return {@link transaction}
+	 *************************************************************************/
+
+	@GetMapping("/getByStatus/{status}")
+	public List<Transaction> getTransactionByStatus(@PathVariable String status) {
+		return service.getTransactionByStatus(status);
 	}
 }

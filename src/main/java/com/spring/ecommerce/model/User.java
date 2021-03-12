@@ -60,6 +60,10 @@ public class User implements Serializable {
 	@Transient
 	private String imageId;
 	
+	private String tinId;
+	
+	private String nidId;
+	
 	@Transient
 	private String imageName;
 
@@ -81,6 +85,9 @@ public class User implements Serializable {
 	
 	@NotNull
 	private String type;
+	
+	@NotNull
+	private boolean verified;
 	
 
 }

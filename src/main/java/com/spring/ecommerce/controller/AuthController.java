@@ -65,10 +65,8 @@ public class AuthController {
 	 * @return {@link User}
 	 *************************************************************************/
 	@PostMapping("/user/register")
-	public String registerUser(@RequestBody User user, HttpServletResponse rs) {
-
-		rs.setStatus(HttpServletResponse.SC_CREATED);
-		return service.create(user, rs);
+	public ResponseEntity<?> registerUser(@RequestBody User user) {
+		return service.create(user);
 	}
 
 	/*************************************************************************

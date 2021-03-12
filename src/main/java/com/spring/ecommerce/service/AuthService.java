@@ -21,7 +21,7 @@ public interface AuthService {
 	 * @param ob {@link User} object
 	 * @return {@link User}
 	 *************************************************************************/
-	String create(User ob, HttpServletResponse rs);
+	ResponseEntity<?> create(User ob);
 
 	/*************************************************************************
 	 * Activate newly created USer
