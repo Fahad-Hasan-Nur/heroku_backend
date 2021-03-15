@@ -1,7 +1,5 @@
 package com.spring.ecommerce.service;
 
-import java.util.Properties;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,17 +67,17 @@ public class AuthServiceImpl implements AuthService {
 			return ResponseEntity.ok("User exists!!!");
 		} else {
 			try {
-				SimpleMailMessage mailMessage = new SimpleMailMessage();
+			//	SimpleMailMessage mailMessage = new SimpleMailMessage();
 				user.setType("user");
 				user.setPassword(passwordEncoder.encode(user.getPassword()));
 				user.setImage(imageRepo.findById(user.getImageId()).orElse(null));
 				ConfirmationToken confirmationToken = new ConfirmationToken(user);
-				mailMessage.setTo(user.getEmail());
-				mailMessage.setSubject("Complete Registration!");
-				mailMessage.setText("To confirm your account, please click here : "
-						+ "http://localhost:8080/api/auth/confirm-account?token="
-						+ confirmationToken.getConfirmationToken());
-				emailService.sendEmail(mailMessage);
+//				mailMessage.setTo(user.getEmail());
+//				mailMessage.setSubject("Complete Registration!");
+//				mailMessage.setText("To confirm your account, please click here : "
+//						+ "http://localhost:8080/api/auth/confirm-account?token="
+//						+ confirmationToken.getConfirmationToken());
+//				emailService.sendEmail(mailMessage);
 				userRepo.save(user);
 				tokenRepo.save(confirmationToken);
 			} catch (Exception e) {
@@ -128,17 +126,16 @@ public class AuthServiceImpl implements AuthService {
 	 * @return {@link String}
 	 *************************************************************************/
 	@Override
-	public String confirmUserAccount(String token, HttpServletResponse rs) {
+	public User confirmUserAccount(String token) {
 		ConfirmationToken cToken = tokenRepo.findByConfirmationToken(token);
 		if (cToken != null) {
 			User user = userRepo.findByEmailIgnoreCase(cToken.getUser().getEmail());
 			user.setActive(true);
 			userRepo.save(user);
 			tokenRepo.delete(cToken);
-			return "User Activated";
+			return user;
 		} else {
-			rs.setHeader("error", "The link is invalid or broken!");
-			return "Failed Activation";
+			return null;
 		}
 	}
 	

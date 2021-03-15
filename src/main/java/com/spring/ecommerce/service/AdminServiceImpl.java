@@ -1,6 +1,8 @@
 package com.spring.ecommerce.service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletResponse;
@@ -14,8 +16,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-
 import com.spring.ecommerce.dto.UserDto;
+import com.spring.ecommerce.email.EmailService;
+import com.spring.ecommerce.email.MailRequest;
+import com.spring.ecommerce.emailConfirmation.ConfirmationToken;
+import com.spring.ecommerce.emailConfirmation.ConfirmationTokenRepo;
 import com.spring.ecommerce.emailConfirmation.EmailConfig;
 import com.spring.ecommerce.model.User;
 import com.spring.ecommerce.repository.ImageRepo;
@@ -39,6 +44,8 @@ public class AdminServiceImpl implements AdminService {
 	private final ImageRepo imageRepo;
 	private final UserRepo adminRepo;
 	private final EmailConfig emailService;
+	private final EmailService service;
+	private final ConfirmationTokenRepo tokenRepo;
 
 	/*************************************************************************
 	 * Create a new Admin
@@ -89,7 +96,7 @@ public class AdminServiceImpl implements AdminService {
 	 *************************************************************************/
 	@Override
 	public List<UserDto> getAllInactiveDealers() {
-		return adminRepo.findAllByRoleAndActiveAndVerified("DEALER",true,false).stream().map(this::getUserDtoFromEntity).collect(Collectors.toList());
+		return adminRepo.findAllByRoleAndActiveAndVerified("DEALER",false,false).stream().map(this::getUserDtoFromEntity).collect(Collectors.toList());
 	}
 
 	/*************************************************************************
@@ -170,12 +177,22 @@ public class AdminServiceImpl implements AdminService {
 	 *************************************************************************/
 	private void sendConfirmation(User user) {
 			try {
-				SimpleMailMessage mailMessage = new SimpleMailMessage();
-				mailMessage.setTo(user.getEmail());
-				mailMessage.setSubject("Verification Success!!!!");
-				mailMessage.setText("Login with your Email and Password from below link : "
-						+ "http://localhost:4200/page-not-found");
-				emailService.sendEmail(mailMessage);
+//				SimpleMailMessage mailMessage = new SimpleMailMessage();
+//				mailMessage.setTo(user.getEmail());
+//				mailMessage.setSubject("Verification Success!!!!");
+//				mailMessage.setText("Login with your Email and Password from below link : "
+//						+ "http://localhost:4200/page-not-found");
+//				emailService.sendEmail(mailMessage);
+				ConfirmationToken token=tokenRepo.findByUser(user);
+				MailRequest ob=new MailRequest();
+				ob.setFrom("nurecommercesite@gmail.com");
+				ob.setTo(user.getEmail());
+				ob.setName("Admin");
+				ob.setSubject("Confirmation Email");
+				Map<String, Object> model = new HashMap<>();
+				model.put("Name", user.getName());
+				model.put("token", token.getConfirmationToken());
+				service.sendEmail(ob, model);
 
 			} catch (Exception e) {
 				log.warn("Failed to create  User: ", e);

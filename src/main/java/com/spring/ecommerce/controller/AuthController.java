@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -76,8 +77,8 @@ public class AuthController {
 	 * @param rs {@link HttpServletResponse} object
 	 * @return {@link String}
 	 *************************************************************************/
-	@GetMapping("/confirm-account")
-	public String confirmUserAccount(@RequestParam String token, HttpServletResponse rs) {
-		return service.confirmUserAccount(token, rs);
+	@GetMapping("/confirm-account/{token}")
+	public User confirmUserAccount(@PathVariable String token) {
+		return service.confirmUserAccount(token);
 	}
 }

@@ -30,7 +30,7 @@ public interface AuthService {
 	 * @param rs {@link HttpServletResponse} object
 	 * @return {@link String}
 	 *************************************************************************/
-	String confirmUserAccount(String token, HttpServletResponse rs);
+	User confirmUserAccount(String token);
 
 	/*************************************************************************
 	 * User Login
