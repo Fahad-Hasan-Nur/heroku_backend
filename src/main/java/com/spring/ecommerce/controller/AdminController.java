@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.ecommerce.dto.UserDto;
 import com.spring.ecommerce.model.User;
+import com.spring.ecommerce.model.VerifiedDealerInfo;
 import com.spring.ecommerce.service.AdminService;
 import lombok.RequiredArgsConstructor;
 
@@ -109,6 +110,16 @@ public class AdminController {
 	public User verifyDealer(@PathVariable String id) {
 		return service.verifyDealer(id);
 	}
+	/*************************************************************************
+	 * Get Verified Dealer info {@link Admin}
+	 * 
+	 * @return {@link Admin}
+	 *************************************************************************/
+
+	@GetMapping("/verifiedDealerInfo")
+	public List<VerifiedDealerInfo> getVerifiedDealerInfo() {
+		return service.getVerifiedDealerInfo();
+	}
 
 	/*************************************************************************
 	 * Update {@link Admin}
@@ -130,5 +141,25 @@ public class AdminController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable String id) {
 		return service.deleteById(id);
+	}
+	/*************************************************************************
+	 * Reject {@link Dealer}
+	 * 
+	 * @param ob {@link Admin} object
+	 * @return {@link Admin}
+	 *************************************************************************/
+	@PostMapping("/rejectDealer/{message}")
+	public User rejectDealer(@PathVariable String message,@RequestBody User ob) {
+		return service.rejectDealer(message,ob);
+	}
+	/*************************************************************************
+	 * Create a new VerifiedDealerInfo
+	 * 
+	 * @param ob {@link VerifiedDealerInfo} object
+	 * @return {@link VerifiedDealerInfo}
+	 *************************************************************************/
+	@PostMapping("/addVerifiedDealerInfo")
+	public VerifiedDealerInfo addVerifiedDealerInfo(@RequestBody @Validated VerifiedDealerInfo verifiedDealerInfo) {
+		return service.createVerifiedDealerInfo(verifiedDealerInfo);
 	}
 }

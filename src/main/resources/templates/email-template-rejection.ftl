@@ -86,7 +86,7 @@
                 <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
                   <tr>
                     <td align="center" style="font-size:0px;padding:8px 0 0 0;word-break:break-word;">
-                      <div style="font-family:-apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;font-size:22px;font-weight:600;line-height:1.2;text-align:center;color:#000000;">Hi. Thanks for subscribing To our Dealer Service. 👏</div>
+                      <div style="font-family:-apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;font-size:22px;font-weight:600;line-height:1.2;text-align:center;color:#000000;">Sorry....Your account can not be activated...</div>
                     </td>
                   </tr>
 				  <tr>
@@ -137,24 +137,12 @@
                 <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="vertical-align:top;" width="100%">
                   <tr>
                     <td align="left" style="font-size:0px;padding:8px 0 16px 0;word-break:break-word;">
-                      <div style="font-family:-apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;font-size:18px;font-weight:600;line-height:1.4;text-align:left;color:#8E8E92;"><span style="color: #000000;">You're almost done.</span> Please activate your account and hit the button below. ✌️</div>
+                      <div style="font-family:-apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;font-size:18px;font-weight:600;line-height:1.4;text-align:left;color:#8E8E92;"><span style="color: #000000;">Rejection Message:</span> ${message}</div>
                     </td>
                   </tr>
                   <tr>
                     <td style="font-size:0px;word-break:break-word;">
                       <div style="height:8px;"> &nbsp; </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td align="left" vertical-align="middle" class="type-cta" style="font-size:0px;padding:8px 0;word-break:break-word;">
-                      <table border="0" cellpadding="0" cellspacing="0" role="presentation" style="border-collapse:separate;line-height:100%;">
-                        <tr>
-                          <td align="center" bgcolor="#000000" role="presentation" style="border:none;border-radius:6px;cursor:auto;mso-padding-alt:12px 12px;background:#000000;" valign="middle"> <a href="http://localhost:4200/page-not-found/${token}" style="display:inline-block;background:#000000;color:#ffffff;font-family:-apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;font-size:15px;font-weight:600;line-height:1;margin:0;text-decoration:none;text-transform:none;padding:12px 12px;mso-padding-alt:0px;border-radius:6px;" target="_blank">
-                           Activate Acccount
-                          </a> </td>
-                        </tr>
-						
-                      </table>
                     </td>
                   </tr>
                 </table>

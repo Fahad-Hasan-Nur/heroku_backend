@@ -49,6 +49,7 @@ public class Image implements Serializable {
 		this.type = type;
 		this.picByte = picByte;
 	}
+	
 	Image(){}
 	
 	

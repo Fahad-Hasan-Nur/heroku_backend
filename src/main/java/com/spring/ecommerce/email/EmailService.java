@@ -28,7 +28,7 @@ public class EmailService {
 	@Autowired
 	private Configuration config;
 	
-	public MailResponse sendEmail(MailRequest request, Map<String, Object> model) {
+	public MailResponse sendEmail(MailRequest request, Map<String, Object> model,String body) {
 		MailResponse response = new MailResponse();
 		MimeMessage message = sender.createMimeMessage();
 		try {
@@ -36,7 +36,7 @@ public class EmailService {
 			MimeMessageHelper helper = new MimeMessageHelper(message, MimeMessageHelper.MULTIPART_MODE_MIXED_RELATED,
 					StandardCharsets.UTF_8.name());
 
-			Template t = config.getTemplate("email-template.ftl");
+			Template t = config.getTemplate(body);
 			String html = FreeMarkerTemplateUtils.processTemplateIntoString(t, model);
 
 			helper.setTo(request.getTo());

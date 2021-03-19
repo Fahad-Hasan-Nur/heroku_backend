@@ -5,12 +5,11 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.spring.ecommerce.dto.UserDto;
 import com.spring.ecommerce.model.Category;
 import com.spring.ecommerce.model.User;
+import com.spring.ecommerce.model.VerifiedDealerInfo;
 
 /*************************************************************************
  * {@link Category} service class
@@ -35,14 +34,14 @@ public interface AdminService {
 	 * @return {@link List< Admin>}
 	 *************************************************************************/
 	List<UserDto> getAllAdmin();
-	
+
 	/*************************************************************************
 	 * Get all Admin {@link Admin}
 	 * 
 	 * @return {@link List< Admin>}
 	 *************************************************************************/
 	List<UserDto> getAllActiveDealers();
-	
+
 	/*************************************************************************
 	 * Get all Admin {@link Admin}
 	 * 
@@ -81,12 +80,35 @@ public interface AdminService {
 	 * @return {@link Admin}
 	 *************************************************************************/
 	ResponseEntity<?> deleteById(String id);
-	
+
 	/*************************************************************************
 	 * Verify Dealer {@link Admin}
 	 * 
 	 * @return {@link Admin}
 	 *************************************************************************/
 
-	 User verifyDealer( String id);
+	User verifyDealer(String id);
+
+	/*************************************************************************
+	 * Reject {@link Dealer}
+	 * 
+	 * @param ob {@link Admin} object
+	 * @return {@link Admin}
+	 *************************************************************************/
+	User rejectDealer(String message, User ob);
+	/*************************************************************************
+	 * Get Verified Dealer info {@link Admin}
+	 * 
+	 * @return {@link Admin}
+	 *************************************************************************/
+
+	List<VerifiedDealerInfo> getVerifiedDealerInfo() ;
+	
+	/*************************************************************************
+	 * Create a new VerifiedDealerInfo
+	 * 
+	 * @param ob {@link VerifiedDealerInfo} object
+	 * @return {@link VerifiedDealerInfo}
+	 *************************************************************************/
+	VerifiedDealerInfo createVerifiedDealerInfo(VerifiedDealerInfo ob);
 }

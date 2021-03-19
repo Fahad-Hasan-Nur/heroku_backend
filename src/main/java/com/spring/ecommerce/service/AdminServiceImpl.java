@@ -11,10 +11,10 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import com.spring.ecommerce.dto.UserDto;
 import com.spring.ecommerce.email.EmailService;
@@ -23,8 +23,10 @@ import com.spring.ecommerce.emailConfirmation.ConfirmationToken;
 import com.spring.ecommerce.emailConfirmation.ConfirmationTokenRepo;
 import com.spring.ecommerce.emailConfirmation.EmailConfig;
 import com.spring.ecommerce.model.User;
+import com.spring.ecommerce.model.VerifiedDealerInfo;
 import com.spring.ecommerce.repository.ImageRepo;
 import com.spring.ecommerce.repository.UserRepo;
+import com.spring.ecommerce.repository.VerifiedDealerInfoRepo;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +45,7 @@ public class AdminServiceImpl implements AdminService {
 
 	private final ImageRepo imageRepo;
 	private final UserRepo adminRepo;
+	private final VerifiedDealerInfoRepo vRepo;
 	private final EmailConfig emailService;
 	private final EmailService service;
 	private final ConfirmationTokenRepo tokenRepo;
@@ -192,12 +195,64 @@ public class AdminServiceImpl implements AdminService {
 				Map<String, Object> model = new HashMap<>();
 				model.put("Name", user.getName());
 				model.put("token", token.getConfirmationToken());
-				service.sendEmail(ob, model);
+				service.sendEmail(ob, model,"email-template.ftl");
 
 			} catch (Exception e) {
 				log.warn("Failed to create  User: ", e);
 			}
 		}
+	/*************************************************************************
+	 * Reject {@link Dealer}
+	 * 
+	 * @param ob {@link Admin} object
+	 * @return {@link Admin}
+	 *************************************************************************/
+	public User rejectDealer(String message,User user) {
+		try {
+			MailRequest ob=new MailRequest();
+			ob.setFrom("nurecommercesite@gmail.com");
+			ob.setTo(user.getEmail());
+			ob.setName("Admin");
+			ob.setSubject("Rejection Email");
+			Map<String, Object> model = new HashMap<>();
+			model.put("Name", user.getName());
+			model.put("message", message);
+			service.sendEmail(ob, model,"email-template-rejection.ftl");
+			ConfirmationToken token=tokenRepo.findByUser(user);
+			tokenRepo.delete(token);
+			adminRepo.deleteById(user.getId());
+			return user;
+		} catch (Exception e) {
+			log.warn("Failed to delete ", e);
+			return user;
+		}
+	}
+	
+	/*************************************************************************
+	 * Get Verified Dealer info {@link Dealer Info}
+	 * 
+	 * @return {@link DealerInfo}
+	 *************************************************************************/
+
+	public List<VerifiedDealerInfo> getVerifiedDealerInfo() {
+		return vRepo.findAll();
+	}
+	/*************************************************************************
+	 * Create a new VerifiedDealerInfo
+	 * 
+	 * @param ob {@link VerifiedDealerInfo} object
+	 * @return {@link VerifiedDealerInfo}
+	 *************************************************************************/
+	@Override
+	public VerifiedDealerInfo createVerifiedDealerInfo(VerifiedDealerInfo verifiedDealerInfo) {
+		try {
+			verifiedDealerInfo.setUser(adminRepo.findById(verifiedDealerInfo.getUserId()).orElse(null));
+			return vRepo.save(verifiedDealerInfo);
+		} catch (Exception e) {
+			log.warn("Failed to create  Admin: ", e);
+			return verifiedDealerInfo;
+		}
+	}
 	
 	
 	public UserDto getUserDtoFromEntity(User ob) {
