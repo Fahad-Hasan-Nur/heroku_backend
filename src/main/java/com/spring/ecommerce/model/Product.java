@@ -36,9 +36,6 @@ public class Product extends AbstractPersistableEntity{
 			@NotNull
 			private String code;
 			
-			@NotNull
-			private String[] size;
-			
 			@ManyToOne
 			@JoinColumn(name = "brand_id",referencedColumnName = "id")
 			@JsonIgnore
@@ -72,14 +69,6 @@ public class Product extends AbstractPersistableEntity{
 			@Transient
 			private String subCategoryName;
 			
-			@Column(nullable = false)
-			@NotNull
-			private double price;
-			
-			@Column(nullable = false)
-			@NotNull
-			private int quantity;
-			
 			@ManyToOne
 			@JoinColumn(name = "image_id",referencedColumnName = "id")
 			@JsonIgnore
@@ -90,6 +79,9 @@ public class Product extends AbstractPersistableEntity{
 			
 			@Transient
 			private String imageId;
+			
+			@NotNull
+			private String[] color;
 			
 		}
 

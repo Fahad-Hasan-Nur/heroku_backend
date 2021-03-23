@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.ecommerce.dto.ProductDto;
 import com.spring.ecommerce.model.Product;
+import com.spring.ecommerce.model.Variation;
 import com.spring.ecommerce.service.ProductServiceImpl;
 
 import lombok.RequiredArgsConstructor;
@@ -111,5 +112,38 @@ public class ProductController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<?> delete(@PathVariable String id) {
 		return service.deleteById(id);
+	}
+	
+	/*************************************************************************
+	 * Create a new Variation
+	 * 
+	 * @param ob {@link Variation} object
+	 * @return {@link Variation}
+	 *************************************************************************/
+	@PostMapping("/addVariation")
+	public List<Variation> createVariation(@RequestBody List<Variation> variation) {
+
+		return service.createVariation(variation);
+	}
+	
+	/*************************************************************************
+	 * Get List Variation {@link Variation} by Product id
+	 * 
+	 * @return {@link List<Variation>}
+	 *************************************************************************/
+
+	@GetMapping("/getAllVariation/{id}")
+	public List<Variation> getVariationByProductId(@PathVariable String id) {
+		return service.getVariationByProductId(id);
+	}
+	/*************************************************************************
+	 * Update {@link Variation}
+	 * 
+	 * @param ob {@link Variation} object
+	 * @return {@link Variation}
+	 *************************************************************************/
+	@PutMapping("/updateVariation")
+	public Variation updateVariation(@RequestBody Variation ob) {
+		return service.updateVariation(ob);
 	}
 }

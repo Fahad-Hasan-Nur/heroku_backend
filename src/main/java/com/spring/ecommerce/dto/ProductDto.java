@@ -16,9 +16,7 @@ public class ProductDto {
 	private String subCategoryName;
 	private String imageId;
 	private String imageName;
-	private double price;
-	private int quantity;
 	private String createdBy;
 	private String updatedBy;
-	private String[] size;
+	private String[] color;
 }

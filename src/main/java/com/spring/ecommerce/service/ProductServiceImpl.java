@@ -10,11 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 import com.spring.ecommerce.dto.ProductDto;
 import com.spring.ecommerce.model.Product;
 import com.spring.ecommerce.model.SubCategory;
+import com.spring.ecommerce.model.Variation;
 import com.spring.ecommerce.repository.BrandRepo;
 import com.spring.ecommerce.repository.CategoryRepo;
 import com.spring.ecommerce.repository.ImageRepo;
 import com.spring.ecommerce.repository.ProductRepo;
 import com.spring.ecommerce.repository.SubCategoryRepo;
+import com.spring.ecommerce.repository.VariationRepo;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -40,6 +42,8 @@ public class ProductServiceImpl implements ProductService {
 	private final CategoryRepo categoryRepo;
 	private final SubCategoryRepo typeRepo;
 	private final ImageRepo imageRepo;
+	private final VariationRepo variationRepo;
+
 
 	/*************************************************************************
 	 * Create a new Product
@@ -139,6 +143,52 @@ public class ProductServiceImpl implements ProductService {
 			return new ResponseEntity<>("Unsccecfull.....!!!!!!!!!.", HttpStatus.BAD_REQUEST);
 		}
 	}
+	/*************************************************************************
+	 * Create a new Variation
+	 * 
+	 * @param ob {@link Variation} object
+	 * @return {@link Variation}
+	 *************************************************************************/
+	public List<Variation> createVariation(List<Variation> variation) {
+		try {
+			for(Variation ob: variation) {
+				ob.setProduct(productRepo.findById(ob.getProductId()).orElse(null));			}
+			return variationRepo.saveAll(variation);
+		} catch (Exception e) {
+			log.warn("Failed to create  Product: ", e);
+			return variation;
+		}
+	}
+	
+	/*************************************************************************
+	 * Get all Variation {@link Variation} by product id
+	 * 
+	 * @return {@link Variation}
+	 *************************************************************************/
+	@Override
+	public List<Variation> getVariationByProductId(String id) {
+		return variationRepo.findAllByProduct(productRepo.findById(id).orElse(null))
+				.stream().map(this::getVariation).collect(Collectors.toList());
+	}
+	
+	/*************************************************************************
+	 * Update {@link Variation}
+	 * 
+	 * @param ob {@link Variation} object
+	 * @return {@link Variation}
+	 *************************************************************************/
+	@Override
+	public Variation updateVariation(Variation ob) {
+		try {
+			Variation existingVariation = variationRepo.findById(ob.getId()).orElse(null);
+			ob.setProduct(productRepo.findById(ob.getProductId()).orElse(null));
+			BeanUtils.copyProperties(ob, existingVariation);
+			return variationRepo.save(existingVariation);
+		} catch (Exception e) {
+			log.warn("Failed to update  Variation: ", e);
+			return ob;
+		}
+	}
 
 	public ProductDto getProjectDtoFromEntity(Product ob) {
 		ob.setBrandId(ob.getBrand().getId());
@@ -153,6 +203,14 @@ public class ProductServiceImpl implements ProductService {
 		ProductDto obj = new ProductDto();
 		BeanUtils.copyProperties(ob, obj);
 		return obj;
+	}
+	
+	public Variation getVariation(Variation ob) {
+		ob.setProductId(ob.getProduct().getId());
+		ob.setProductName(ob.getProduct().getName());
+//		Variation obj = new Variation();
+//		BeanUtils.copyProperties(ob, obj);
+		return ob;
 	}
 
 }
