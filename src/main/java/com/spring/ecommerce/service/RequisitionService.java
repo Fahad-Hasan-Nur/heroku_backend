@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 
-
 import com.spring.ecommerce.dto.RequisitionDto;
 import com.spring.ecommerce.model.Product;
 import com.spring.ecommerce.model.Requisition;
+import com.spring.ecommerce.model.RequisitionProduct;
 
 /*************************************************************************
  * {@link Product} service class
@@ -38,14 +38,14 @@ public interface RequisitionService {
 	 * @return {@link Requisition}
 	 *************************************************************************/
 	RequisitionDto getRequisitionById(String id);
-	
+
 	/*************************************************************************
 	 * Get Requisition {@link Requisition} by On Cart
 	 * 
 	 * @return {@link Requisition}
 	 *************************************************************************/
 	List<RequisitionDto> getRequisitionByOnCart(String id);
-	
+
 	/*************************************************************************
 	 * Get Requisition {@link Requisition} by Status
 	 * 
@@ -70,26 +70,51 @@ public interface RequisitionService {
 	 * @return {@link Requisition}
 	 *************************************************************************/
 	ResponseEntity<?> deleteById(String id);
-	
+
 	/*************************************************************************
 	 * Update Requisition Staus {@link Requisition}
 	 * 
 	 * @return {@link Requisition}
 	 *************************************************************************/
 
-	 Requisition verifyRequisition( String id);
+	Requisition verifyRequisition(String id);
+
 	/*************************************************************************
 	 * Update Requisition Staus {@link Requisition}
 	 * 
 	 * @return {@link Requisition}
 	 *************************************************************************/
 
-	 Requisition completeRequisition( String id) ;
+	Requisition completeRequisition(String id);
+
 	/*************************************************************************
 	 * Update Requisition Staus {@link Requisition}
 	 * 
 	 * @return {@link transaction}
 	 *************************************************************************/
 
-	 Requisition processRequisition( String id);
+	Requisition processRequisition(String id);
+
+	/*************************************************************************
+	 * Create new RequisitionProducts
+	 * 
+	 * @param ob {@link RequisitionProducts} object
+	 * @return {@link RequisitionProducts}
+	 *************************************************************************/
+	List<RequisitionProduct> createRequisitionProduct(List<RequisitionProduct> requisitionProduct);
+	
+	/*************************************************************************
+	 * Get List RequisitionProduct {@link RequisitionProduct} by Requisition id
+	 * 
+	 * @return {@link List<RequisitionProduct>}
+	 *************************************************************************/
+
+	List<RequisitionProduct> getRpByRequisitionId( String id);
+	
+	/*************************************************************************
+	 * Get Requisition {@link Requisition} by Complete
+	 * 
+	 * @return {@link Requisition}
+	 *************************************************************************/
+	List<RequisitionDto> getRequisitionByComplete(String id);
 }

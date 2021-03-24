@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.spring.ecommerce.dto.RequisitionDto;
 import com.spring.ecommerce.model.Product;
 import com.spring.ecommerce.model.Requisition;
+import com.spring.ecommerce.model.RequisitionProduct;
 import com.spring.ecommerce.model.Transaction;
+import com.spring.ecommerce.model.Variation;
 import com.spring.ecommerce.service.RequisitionService;
 
 import lombok.RequiredArgsConstructor;
@@ -144,6 +146,39 @@ public class RequisitionController {
 	@GetMapping("/processRequisition/{id}")
 	public Requisition processRequisition(@PathVariable String id) {
 		return service.processRequisition(id);
+	}
+	
+	/*************************************************************************
+	 * Create  new RequisitionProducts
+	 * 
+	 * @param ob {@link RequisitionProducts} object
+	 * @return {@link RequisitionProducts}
+	 *************************************************************************/
+	@PostMapping("/addRequisitionProduct")
+	public List<RequisitionProduct> createRequisitionProduct(@RequestBody List<RequisitionProduct> requisitionProduct) {
+
+		return service.createRequisitionProduct(requisitionProduct);
+	}
+	/*************************************************************************
+	 * Get List RequisitionProduct {@link RequisitionProduct} by Requisition id
+	 * 
+	 * @return {@link List<RequisitionProduct>}
+	 *************************************************************************/
+
+	@GetMapping("/getAllRequisitionProduct/{id}")
+	public List<RequisitionProduct> getRpByRequisitionId(@PathVariable String id) {
+		return service.getRpByRequisitionId(id);
+	}
+	
+	/*************************************************************************
+	 * Get Requisition {@link Requisition} by Complete
+	 * 
+	 * @return {@link Requisition}
+	 *************************************************************************/
+
+	@GetMapping("/getComplete/{id}")
+	public List<RequisitionDto> getRequisitionByComplete(@PathVariable String id) {
+		return service.getRequisitionByComplete(id);
 	}
 	
 }

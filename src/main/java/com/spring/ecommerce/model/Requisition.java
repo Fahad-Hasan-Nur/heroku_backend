@@ -27,29 +27,11 @@ import lombok.ToString;
 @ToString(callSuper = true)
 public class Requisition extends AbstractPersistableEntity {
 	private static final long serialVersionUID = 1L;
-	
-	@ManyToOne
-	@JoinColumn(name = "product_id",referencedColumnName = "id")
-	@JsonIgnore
-	private Product product;
-	
-	@Transient
-	private String productId;
-	
-	@Transient
-	private String productName;
+
 
 	@Column(nullable = false)
 	@NotNull
 	private long totalCost;
-	
-	@Column(nullable = false)
-	@NotNull
-	private int cartoonSize;
-	
-	@Column(nullable = false)
-	@NotNull
-	private int cartoonPerLot;
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id",referencedColumnName = "id")
@@ -62,8 +44,6 @@ public class Requisition extends AbstractPersistableEntity {
 	@NotNull
 	private String status;
 	
-	@NotNull
-	private String size;
 	
 }
 

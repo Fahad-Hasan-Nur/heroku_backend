@@ -9,19 +9,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
-import com.spring.ecommerce.dto.ProductDto;
 import com.spring.ecommerce.dto.RequisitionDto;
-import com.spring.ecommerce.model.Product;
 import com.spring.ecommerce.model.Requisition;
-import com.spring.ecommerce.model.Transaction;
-import com.spring.ecommerce.repository.BrandRepo;
-import com.spring.ecommerce.repository.CategoryRepo;
-import com.spring.ecommerce.repository.ImageRepo;
+import com.spring.ecommerce.model.RequisitionProduct;
+import com.spring.ecommerce.model.Variation;
 import com.spring.ecommerce.repository.ProductRepo;
+import com.spring.ecommerce.repository.RequisitionProductRepo;
 import com.spring.ecommerce.repository.RequisitionRepo;
-import com.spring.ecommerce.repository.SubCategoryRepo;
 import com.spring.ecommerce.repository.UserRepo;
+import com.spring.ecommerce.repository.VariationRepo;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +42,10 @@ public class RequisitionServiceImpl implements RequisitionService {
 	private final RequisitionRepo requisitionRepo;
 	private final ProductRepo productRepo;
 	private final UserRepo userRepo;
+	private final VariationRepo variationRepo;
+	private final RequisitionProductRepo rpRepo;
+
+
 
 	/*************************************************************************
 	 * Create a new Requisition
@@ -51,7 +56,6 @@ public class RequisitionServiceImpl implements RequisitionService {
 	@Override
 	public Requisition create(Requisition requisition) {
 		try {
-			requisition.setProduct(productRepo.findById(requisition.getProductId()).orElse(null));
 			requisition.setUser(userRepo.findById(requisition.getUserId()).orElse(null));
 			return requisitionRepo.save(requisition);
 		} catch (Exception e) {
@@ -112,7 +116,6 @@ public class RequisitionServiceImpl implements RequisitionService {
 		try {
 			Requisition existingRequisition = requisitionRepo.findById(requisition.getId()).orElse(null);
 			 requisition.setUser(userRepo.findById(requisition.getUserId()).orElse(null));
-			 requisition.setProduct(productRepo.findById(requisition.getProductId()).orElse(null));
 			BeanUtils.copyProperties(requisition, existingRequisition);
 			return requisitionRepo.save(existingRequisition);
 		} catch (Exception e) {
@@ -130,6 +133,7 @@ public class RequisitionServiceImpl implements RequisitionService {
 	@Override
 	public ResponseEntity<?> deleteById(String id) {
 		try {
+			rpRepo.deleteAll(rpRepo.findAllByRequisition(requisitionRepo.findById(id).orElse(null)));
 			requisitionRepo.deleteById(id);
 			return new ResponseEntity<>("Deleted Succecfully.", HttpStatus.OK);
 		} catch (Exception e) {
@@ -174,11 +178,63 @@ public class RequisitionServiceImpl implements RequisitionService {
 		requisitionRepo.save(ob);
 		return ob;
 	}
+	/*************************************************************************
+	 * Create  new RequisitionProducts
+	 * 
+	 * @param ob {@link RequisitionProducts} object
+	 * @return {@link RequisitionProducts}
+	 *************************************************************************/
+	public List<RequisitionProduct> createRequisitionProduct( List<RequisitionProduct> requisitionProduct) {
+
+		try {
+			for(RequisitionProduct ob: requisitionProduct) {
+				ob.setProduct(productRepo.findById(ob.getProductId()).orElse(null));
+				ob.setVariation(variationRepo.findById(ob.getVariationId()).orElse(null));
+				ob.setRequisition(requisitionRepo.findById(ob.getRequisitionId()).orElse(null));
+				}
+			return rpRepo.saveAll(requisitionProduct);
+		} catch (Exception e) {
+			log.warn("Failed to create  requisitionProduct: ", e);
+			return requisitionProduct;
+		}	
+		
+	}
+	/*************************************************************************
+	 * Get List RequisitionProduct {@link RequisitionProduct} by Requisition id
+	 * 
+	 * @return {@link List<RequisitionProduct>}
+	 *************************************************************************/
+
+	public List<RequisitionProduct> getRpByRequisitionId(@PathVariable String id) {
+		return rpRepo.findAllByRequisition(requisitionRepo.findById(id).orElse(null))
+				.stream().map(this::getRequisitionProduct).collect(Collectors.toList());	
+		
+	}
+	/*************************************************************************
+	 * Get Requisition {@link Requisition} by Complete
+	 * 
+	 * @return {@link List<Requisition>}
+	 *************************************************************************/
+	@Override
+	public List<RequisitionDto> getRequisitionByComplete(String userId) {
+		return requisitionRepo.findAllByStatusAndUser("Complete",userRepo.findById(userId).orElse(null)).stream().map(this::getRequisitionDtoFromEntity).collect(Collectors.toList());
+	}
+	
 	public RequisitionDto getRequisitionDtoFromEntity(Requisition ob) {
-		ob.setProductId(ob.getProduct().getId());
-		ob.setProductName(ob.getProduct().getName());
 		ob.setUserId(ob.getUser().getId());
 		RequisitionDto obj = new RequisitionDto();
+		BeanUtils.copyProperties(ob, obj);
+		return obj;
+	}
+	
+	public RequisitionProduct getRequisitionProduct(RequisitionProduct ob) {
+		ob.setProductId(ob.getProduct().getId());
+		ob.setProductName(ob.getProduct().getName());
+		ob.setRequisitionId(ob.getRequisition().getId());
+		ob.setVariationId(ob.getVariation().getId());
+		ob.setVariationName(ob.getVariation().getName());
+
+		RequisitionProduct obj = new RequisitionProduct();
 		BeanUtils.copyProperties(ob, obj);
 		return obj;
 	}
