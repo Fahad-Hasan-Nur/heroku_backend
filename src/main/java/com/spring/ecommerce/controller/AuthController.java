@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 
@@ -44,6 +43,17 @@ public class AuthController {
 	@PostMapping("/user/login")
 	public ResponseEntity<?> userLogin(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
 		return service.createTokenForUser(authenticationRequest);
+	}
+	
+	/*************************************************************************
+	 * Initialize First super admin
+	 * 
+	 * @param ob {@link User} object
+	 * @throws Exception 
+	 *************************************************************************/
+	@GetMapping
+	public ResponseEntity<?> initializeAdmin() throws Exception {
+		return service.initializeAdmin();
 	}
 	
 	/*************************************************************************

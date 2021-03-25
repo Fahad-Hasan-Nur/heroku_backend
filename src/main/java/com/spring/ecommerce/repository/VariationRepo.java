@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.spring.ecommerce.model.Product;
-import com.spring.ecommerce.model.Variation;
+import com.spring.ecommerce.model.ProductVariation;
 
 
-public interface VariationRepo extends JpaRepository<Variation, String> {
+public interface VariationRepo extends JpaRepository<ProductVariation, String> {
 
-	List<Variation> findAllByProduct(Product product);
+	List<ProductVariation> findAllByProduct(Product product);
 }

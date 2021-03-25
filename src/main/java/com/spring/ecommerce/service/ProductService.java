@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.spring.ecommerce.dto.ProductDto;
 import com.spring.ecommerce.model.Product;
-import com.spring.ecommerce.model.Variation;
+import com.spring.ecommerce.model.ProductVariation;
 
 /*************************************************************************
  * {@link Product} service class
@@ -74,24 +74,24 @@ public interface ProductService {
 	/*************************************************************************
 	 * Create a new Variation
 	 * 
-	 * @param ob {@link Variation} object
-	 * @return {@link Variation}
+	 * @param ob {@link ProductVariation} object
+	 * @return {@link ProductVariation}
 	 *************************************************************************/
-	List<Variation> createVariation(List<Variation> ob);
+	List<ProductVariation> createVariation(List<ProductVariation> ob);
 	
 	/*************************************************************************
-	 * Get Variation {@link Variation} by Product id
+	 * Get Variation {@link ProductVariation} by Product id
 	 * 
-	 * @return {@link Variation}
+	 * @return {@link ProductVariation}
 	 *************************************************************************/
-	List<Variation> getVariationByProductId(String id);
+	List<ProductVariation> getVariationByProductId(String id);
 	
 	/*************************************************************************
-	 * Update {@link Variation}
+	 * Update {@link ProductVariation}
 	 * 
-	 * @param ob {@link Variation} object
+	 * @param ob {@link ProductVariation} object
 	 * @param rs
-	 * @return {@link Variation}
+	 * @return {@link ProductVariation}
 	 *************************************************************************/
-	Variation updateVariation(Variation ob);
+	ProductVariation updateVariation(ProductVariation ob);
 }

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.ecommerce.dto.ProductDto;
 import com.spring.ecommerce.model.Product;
-import com.spring.ecommerce.model.Variation;
+import com.spring.ecommerce.model.ProductVariation;
 import com.spring.ecommerce.service.ProductServiceImpl;
 
 import lombok.RequiredArgsConstructor;
@@ -117,33 +117,33 @@ public class ProductController {
 	/*************************************************************************
 	 * Create a new Variation
 	 * 
-	 * @param ob {@link Variation} object
-	 * @return {@link Variation}
+	 * @param ob {@link ProductVariation} object
+	 * @return {@link ProductVariation}
 	 *************************************************************************/
 	@PostMapping("/addVariation")
-	public List<Variation> createVariation(@RequestBody List<Variation> variation) {
+	public List<ProductVariation> createVariation(@RequestBody List<ProductVariation> variation) {
 
 		return service.createVariation(variation);
 	}
 	
 	/*************************************************************************
-	 * Get List Variation {@link Variation} by Product id
+	 * Get List Variation {@link ProductVariation} by Product id
 	 * 
 	 * @return {@link List<Variation>}
 	 *************************************************************************/
 
 	@GetMapping("/getAllVariation/{id}")
-	public List<Variation> getVariationByProductId(@PathVariable String id) {
+	public List<ProductVariation> getVariationByProductId(@PathVariable String id) {
 		return service.getVariationByProductId(id);
 	}
 	/*************************************************************************
-	 * Update {@link Variation}
+	 * Update {@link ProductVariation}
 	 * 
-	 * @param ob {@link Variation} object
-	 * @return {@link Variation}
+	 * @param ob {@link ProductVariation} object
+	 * @return {@link ProductVariation}
 	 *************************************************************************/
 	@PutMapping("/updateVariation")
-	public Variation updateVariation(@RequestBody Variation ob) {
+	public ProductVariation updateVariation(@RequestBody ProductVariation ob) {
 		return service.updateVariation(ob);
 	}
 }

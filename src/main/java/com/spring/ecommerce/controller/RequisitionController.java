@@ -21,7 +21,7 @@ import com.spring.ecommerce.model.Product;
 import com.spring.ecommerce.model.Requisition;
 import com.spring.ecommerce.model.RequisitionProduct;
 import com.spring.ecommerce.model.Transaction;
-import com.spring.ecommerce.model.Variation;
+import com.spring.ecommerce.model.ProductVariation;
 import com.spring.ecommerce.service.RequisitionService;
 
 import lombok.RequiredArgsConstructor;

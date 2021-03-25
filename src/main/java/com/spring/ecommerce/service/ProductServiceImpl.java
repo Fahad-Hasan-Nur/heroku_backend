@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.spring.ecommerce.dto.ProductDto;
 import com.spring.ecommerce.model.Product;
 import com.spring.ecommerce.model.SubCategory;
-import com.spring.ecommerce.model.Variation;
+import com.spring.ecommerce.model.ProductVariation;
 import com.spring.ecommerce.repository.BrandRepo;
 import com.spring.ecommerce.repository.CategoryRepo;
 import com.spring.ecommerce.repository.ImageRepo;
@@ -146,12 +146,12 @@ public class ProductServiceImpl implements ProductService {
 	/*************************************************************************
 	 * Create a new Variation
 	 * 
-	 * @param ob {@link Variation} object
-	 * @return {@link Variation}
+	 * @param ob {@link ProductVariation} object
+	 * @return {@link ProductVariation}
 	 *************************************************************************/
-	public List<Variation> createVariation(List<Variation> variation) {
+	public List<ProductVariation> createVariation(List<ProductVariation> variation) {
 		try {
-			for(Variation ob: variation) {
+			for(ProductVariation ob: variation) {
 				ob.setProduct(productRepo.findById(ob.getProductId()).orElse(null));			}
 			return variationRepo.saveAll(variation);
 		} catch (Exception e) {
@@ -161,26 +161,26 @@ public class ProductServiceImpl implements ProductService {
 	}
 	
 	/*************************************************************************
-	 * Get all Variation {@link Variation} by product id
+	 * Get all Variation {@link ProductVariation} by product id
 	 * 
-	 * @return {@link Variation}
+	 * @return {@link ProductVariation}
 	 *************************************************************************/
 	@Override
-	public List<Variation> getVariationByProductId(String id) {
+	public List<ProductVariation> getVariationByProductId(String id) {
 		return variationRepo.findAllByProduct(productRepo.findById(id).orElse(null))
 				.stream().map(this::getVariation).collect(Collectors.toList());
 	}
 	
 	/*************************************************************************
-	 * Update {@link Variation}
+	 * Update {@link ProductVariation}
 	 * 
-	 * @param ob {@link Variation} object
-	 * @return {@link Variation}
+	 * @param ob {@link ProductVariation} object
+	 * @return {@link ProductVariation}
 	 *************************************************************************/
 	@Override
-	public Variation updateVariation(Variation ob) {
+	public ProductVariation updateVariation(ProductVariation ob) {
 		try {
-			Variation existingVariation = variationRepo.findById(ob.getId()).orElse(null);
+			ProductVariation existingVariation = variationRepo.findById(ob.getId()).orElse(null);
 			ob.setProduct(productRepo.findById(ob.getProductId()).orElse(null));
 			BeanUtils.copyProperties(ob, existingVariation);
 			return variationRepo.save(existingVariation);
@@ -205,7 +205,7 @@ public class ProductServiceImpl implements ProductService {
 		return obj;
 	}
 	
-	public Variation getVariation(Variation ob) {
+	public ProductVariation getVariation(ProductVariation ob) {
 		ob.setProductId(ob.getProduct().getId());
 		ob.setProductName(ob.getProduct().getName());
 //		Variation obj = new Variation();

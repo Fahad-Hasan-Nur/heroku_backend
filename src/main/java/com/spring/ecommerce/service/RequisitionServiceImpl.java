@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import com.spring.ecommerce.dto.RequisitionDto;
 import com.spring.ecommerce.model.Requisition;
 import com.spring.ecommerce.model.RequisitionProduct;
-import com.spring.ecommerce.model.Variation;
+import com.spring.ecommerce.model.ProductVariation;
 import com.spring.ecommerce.repository.ProductRepo;
 import com.spring.ecommerce.repository.RequisitionProductRepo;
 import com.spring.ecommerce.repository.RequisitionRepo;

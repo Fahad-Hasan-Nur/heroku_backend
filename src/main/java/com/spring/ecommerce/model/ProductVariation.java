@@ -22,8 +22,8 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name="ecommerce_variation")
-public class Variation extends AbstractPersistableEntity{
+@Table(name="ecommerce_product_variation")
+public class ProductVariation extends AbstractPersistableEntity{
 
 	private static final long serialVersionUID = 1L;
 	

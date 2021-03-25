@@ -4,7 +4,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -166,5 +165,27 @@ public class AuthServiceImpl implements AuthService {
 		return ResponseEntity.ok(new AuthenticationResponse(jwt));
 	}
 	
-
+	/*************************************************************************
+	 * Initialize First super admin
+	 * 
+	 * @param ob {@link User} object
+	 * @throws Exception 
+	 *************************************************************************/
+	public ResponseEntity<?> initializeAdmin() throws Exception {
+		User ob=new User();
+		ob.setEmail("superadmin@gmail.com");
+		ob.setPassword(passwordEncoder.encode("superadmin"));
+		ob.setName("Super Admin");
+		ob.setPhoneNumber("12345");
+		ob.setRole("SUPER_ADMIN");
+		ob.setActive(true);
+		ob.setVerified(true);
+		ob.setType("admin");
+		try {
+			userRepo.save(ob);
+		} catch (BadCredentialsException e) {
+			throw new Exception("Incorrect Email Or Pasword.", e);
+		}
+		return null;
+	}
 }

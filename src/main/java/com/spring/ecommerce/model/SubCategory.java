@@ -14,7 +14,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * The persistent class for the ecommerce_product_type database table.
+ * The persistent class for the ecommerce_sub_category database table.
  *
  * @author Fahad Hasan
  * @since 2021-01-29
@@ -22,7 +22,7 @@ import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name="ecommerce_product_type")
+@Table(name="ecommerce_sub_category")
 public class SubCategory extends AbstractPersistableEntity{
 
 	private static final long serialVersionUID = 1L;

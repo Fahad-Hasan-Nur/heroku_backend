@@ -45,7 +45,7 @@ public class RequisitionProduct extends AbstractPersistableEntity{
 		@ManyToOne
 		@JoinColumn(name = "variation_id",referencedColumnName = "id")
 		@JsonIgnore
-		private Variation variation;
+		private ProductVariation variation;
 		
 		@Transient
 		private String variationId;

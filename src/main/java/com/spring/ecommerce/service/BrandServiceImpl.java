@@ -47,10 +47,10 @@ public class BrandServiceImpl implements BrandService {
 	@Override
 	public Brand create(Brand brand) {
 		try {
-			brand.setImage(imageRepo.findByName(brand.getImageName()).orElse(null));
+			brand.setImage(imageRepo.findById(brand.getImageId()).orElse(null));
 			return brandRepo.save(brand);
 		} catch (Exception e) {
-			log.warn("Failed to create  Product: ", e);
+			log.warn("Failed to create  Brand: ", e);
 			return brand;
 		}
 	}

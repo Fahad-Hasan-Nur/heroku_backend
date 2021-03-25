@@ -51,4 +51,11 @@ public interface AuthService {
 	 * @throws Exception
 	 *************************************************************************/
 	ResponseEntity<?> createTokenForAdmin(AuthenticationRequest authenticationRequest) throws Exception;
+	/*************************************************************************
+	 * Initialize First super admin
+	 * 
+	 * @param ob {@link User} object
+	 * @throws Exception 
+	 *************************************************************************/
+	 ResponseEntity<?> initializeAdmin() throws Exception;
 }
