@@ -2,6 +2,7 @@ package com.spring.ecommerce.dto;
 
 import java.util.Date;
 
+
 import lombok.Data;
 
 @Data
@@ -20,4 +21,7 @@ public class UserDto {
 	private String tinId;
 	private String nidId;
 	private boolean verified;
+	private String permanentAddress;
+	private String presentAddress;
+	private String shopAddress;
 }

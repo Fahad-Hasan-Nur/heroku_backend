@@ -89,5 +89,14 @@ public class User implements Serializable {
 	@NotNull
 	private boolean verified;
 	
+	@NotNull
+	private String permanentAddress;
+	
+	@NotNull
+	private String presentAddress;
+	
+	@NotNull
+	private String shopAddress;
+	
 
 }

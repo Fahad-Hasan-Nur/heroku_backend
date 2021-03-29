@@ -131,8 +131,14 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public User update(User ob) {
 		try {
+			BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
 			User existingUser = adminRepo.findById(ob.getId()).orElse(null);
-			ob.setPassword(existingUser.getPassword());
+			if(ob.getPassword()!=null) {
+				ob.setPassword(passwordEncoder.encode(ob.getPassword()));
+			}else {
+				ob.setPassword(existingUser.getPassword());
+			}
 			ob.setImage(imageRepo.findById(ob.getImageId()).orElse(null));
 			BeanUtils.copyProperties(ob, existingUser);
 			return adminRepo.save(existingUser);
