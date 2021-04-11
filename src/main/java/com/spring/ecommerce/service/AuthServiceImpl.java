@@ -1,5 +1,7 @@
 package com.spring.ecommerce.service;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,17 +68,10 @@ public class AuthServiceImpl implements AuthService {
 			return ResponseEntity.ok("User exists!!!");
 		} else {
 			try {
-			//	SimpleMailMessage mailMessage = new SimpleMailMessage();
 				user.setType("user");
 				user.setPassword(passwordEncoder.encode(user.getPassword()));
 				user.setImage(imageRepo.findById(user.getImageId()).orElse(null));
 				ConfirmationToken confirmationToken = new ConfirmationToken(user);
-//				mailMessage.setTo(user.getEmail());
-//				mailMessage.setSubject("Complete Registration!");
-//				mailMessage.setText("To confirm your account, please click here : "
-//						+ "http://localhost:8080/api/auth/confirm-account?token="
-//						+ confirmationToken.getConfirmationToken());
-//				emailService.sendEmail(mailMessage);
 				userRepo.save(user);
 				tokenRepo.save(confirmationToken);
 			} catch (Exception e) {
@@ -147,6 +142,10 @@ public class AuthServiceImpl implements AuthService {
 	 *************************************************************************/
 	@Override
 	public ResponseEntity<?> createTokenForAdmin(AuthenticationRequest authenticationRequest) throws Exception {
+		List<User> user=userRepo.findAll();
+		if(user.isEmpty()) {
+			initializeAdmin();
+		}
 		final User admin = userRepo.findByEmailAndActiveAndVerified(authenticationRequest.getEmail(), true,true);
 		if (admin == null) {
 			return ResponseEntity.ok("Admin  dont Exist...");
